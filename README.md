@@ -1,2 +1,2 @@
-# 5o7.github.io
+# 5o7
 Personal Site
