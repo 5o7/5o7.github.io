@@ -200,7 +200,7 @@
 
       // Add texas layers
 
-      map.addSource('counties', {type: 'geojson', data: 'texas_counties.geojson'});
+      map.addSource('counties', {type: 'geojson', data: 'County_Lines.geojson'});
       map.addLayer({'id': 'counties', 'type': 'line', 'source': 'counties', 'layout': {}, 'paint': {'line-color': '#000', 'line-width': 1}});
 
       // map.addSource('hoods', {type: 'geojson', data: 'Subdivisons_View.geojson'});
