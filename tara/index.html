@@ -13,7 +13,7 @@
     html, body {margin: 0; padding: 0; height: 100%;}
     #map {width: 100%; flex-grow: 1; height: 100%;}
     #container {display: flex; height: 100%;}
-    #sidebar {width: 250px; flex-shrink: 0; height: 100%; padding: 10px;}
+    #sidebar {width: 200px; flex-shrink: 0; height: 100%; padding: 10px;}
     button {display: block; margin-bottom: 15px;}
   </style>
 
@@ -511,7 +511,21 @@
           // {
           //   console.log(selectedItem2.properties['NAME20'])
           // }
-          const [selectedItem3] = map.queryRenderedFeatures(e.point, {layers: 
+          
+
+          // const [selectedItem4] = map.queryRenderedFeatures(e.point, {layers: ['parcels1']});
+          // if (selectedItem4)
+          // {
+          //   console.log(selectedItem4.properties['owner_name'])
+          // }
+          // const [selectedItem5] = map.queryRenderedFeatures(e.point, {layers: ['parcels2']});
+          // if (selectedItem5)
+          // {
+          //   console.log(selectedItem5.properties['owner_name'])
+          // }
+        }
+
+        const [selectedItem3] = map.queryRenderedFeatures(e.point, {layers: 
             [
               'parcels01', 'parcels02', 'parcels03', 'parcels04', 'parcels05', 'parcels06', 'parcels07', 'parcels08a', 'parcels09a', 'parcels10a',
               'parcels11', 'parcels12', 'parcels13', 'parcels14', 'parcels15a', 'parcels16a', 'parcels17a', 'parcels18a', 'parcels19a', 'parcels20a',
@@ -567,17 +581,6 @@
             // document.getElementById('value').innerHTML = `<p>${'Unknown Value: $' + selectedItem3.properties['main_imprv_val']}</p>`;
 
           }
-          // const [selectedItem4] = map.queryRenderedFeatures(e.point, {layers: ['parcels1']});
-          // if (selectedItem4)
-          // {
-          //   console.log(selectedItem4.properties['owner_name'])
-          // }
-          // const [selectedItem5] = map.queryRenderedFeatures(e.point, {layers: ['parcels2']});
-          // if (selectedItem5)
-          // {
-          //   console.log(selectedItem5.properties['owner_name'])
-          // }
-        }
       })
 
       let hoverStateId = null
