@@ -46,7 +46,7 @@
   <div id='sidebar'>
     
     <pre id='info'></pre>
-    <div id='appName' style="white-space: pre-wrap;">Denton Property Data v02</div>
+    <div id='appName' style="white-space: pre-wrap;">Denton Property Data v001</div>
     <div id='owner' style="white-space: pre-wrap;">Owner</div>
     <div id='address' style="white-space: pre-wrap;">Address</div>
     <div id='neighborhood' style="white-space: pre-wrap;">Neighborhood</div>
@@ -231,7 +231,7 @@
       //   'fill-opacity': 0.0}});
 
       map.addSource('parcels01', {type: 'geojson', data: 'Parcels01.geojson'});
-      map.addLayer({'id': 'parcels01', 'type': 'fill', 'source': 'parcels01', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels01', 'type': 'fill', 'source': 'parcels01', 'layout': {}, 'paint': {'fill-color': 'orange', 'fill-opacity': 1}});
       map.addSource('parcels02', {type: 'geojson', data: 'Parcels02.geojson'});
       map.addLayer({'id': 'parcels02', 'type': 'fill', 'source': 'parcels02', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels03', {type: 'geojson', data: 'Parcels03.geojson'});
@@ -450,17 +450,17 @@
         const [s01] = map.queryRenderedFeatures(e.point, {layers: ['parcels01']});
         if (s01)
         {
-          document.getElementById('owner').innerHTML = `<p>${s01.properties['owner_name']}</p>`;
-          document.getElementById('neighborhood').innerHTML = `<p>${s01.properties['legal_desc']}</p>`;
-          document.getElementById('year').innerHTML = `<p>${'Year built: ' + s01.properties['yr_blt']}</p>`;
-          document.getElementById('acreage').innerHTML = `<p>${'Acreage: ' + s01.properties['legal_acreage'] + ' acres'}</p>`;
-          document.getElementById('parcel_square_feet').innerHTML = `<p>${'Parcel size: ' + s01.properties['land_sqft'] + ' sqft'}</p>`;
-          document.getElementById('living_square_feet').innerHTML = `<p>${'Building Size: ' + s01.properties['living_area'] + ' sqft'}</p>`;
-          document.getElementById('city').innerHTML = `<p>${'Municipality: ' + s01.properties['city']}</p>`;
-          document.getElementById('school').innerHTML = `<p>${'School District: ' + s01.properties['school']}</p>`;
-          document.getElementById('appraised').innerHTML = `<p>${'Appraised: $' + s01.properties['cert_appr_val']}</p>`;
-          document.getElementById('assessed').innerHTML = `<p>${'Assessed: $' + s01.properties['cert_asses_val']}</p>`;
-          document.getElementById('other').innerHTML = `<p>${'Type: ' + s01.properties['main_imprv']}</p>`;
+          document.getElementById('owner').innerHTML = `<div>${s01.properties['owner_name']}</div>`;
+          document.getElementById('neighborhood').innerHTML = `<div>${s01.properties['legal_desc']}</div>`;
+          document.getElementById('year').innerHTML = `<div>${'Year built: ' + s01.properties['yr_blt']}</div>`;
+          document.getElementById('acreage').innerHTML = `<div>${'Acreage: ' + s01.properties['legal_acreage'] + ' acres'}</div>`;
+          document.getElementById('parcel_square_feet').innerHTML = `<div>${'Parcel size: ' + s01.properties['land_sqft'] + ' sqft'}</div>`;
+          document.getElementById('living_square_feet').innerHTML = `<div>${'Building Size: ' + s01.properties['living_area'] + ' sqft'}</div>`;
+          document.getElementById('city').innerHTML = `<div>${'Municipality: ' + s01.properties['city']}</div>`;
+          document.getElementById('school').innerHTML = `<div>${'School District: ' + s01.properties['school']}</div>`;
+          document.getElementById('appraised').innerHTML = `<div>${'Appraised: $' + s01.properties['cert_appr_val']}</div>`;
+          document.getElementById('assessed').innerHTML = `<div>${'Assessed: $' + s01.properties['cert_asses_val']}</div>`;
+          document.getElementById('other').innerHTML = `<div>${'Type: ' + s01.properties['main_imprv']}</div>`;
         }
 
 
