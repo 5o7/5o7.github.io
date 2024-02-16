@@ -231,7 +231,7 @@
       //   'fill-opacity': 0.0}});
 
       map.addSource('parcels01', {type: 'geojson', data: 'Parcels01.geojson'});
-      map.addLayer({'id': 'parcels01', 'type': 'fill', 'source': 'parcels01', 'layout': {}, 'paint': {'fill-color': 'orange', 'fill-opacity': 1}});
+      map.addLayer({'id': 'parcels01', 'type': 'fill', 'source': 'parcels01', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels02', {type: 'geojson', data: 'Parcels02.geojson'});
       map.addLayer({'id': 'parcels02', 'type': 'fill', 'source': 'parcels02', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels03', {type: 'geojson', data: 'Parcels03.geojson'});
@@ -412,58 +412,38 @@
         const [selectedItem5] = map.queryRenderedFeatures(e.point, {layers: ['hor']});
         if (selectedItem5)
         {
-          document.getElementById('districtLabel').innerHTML = `<p> District: ${selectedItem5.properties['District']}</p>`;
-          document.getElementById('repLabel').innerHTML = `<p> Representative: ${selectedItem5.properties['REPRESENTATIVE']}</p>`;
+          document.getElementById('districtLabel').innerHTML = `<p>District: ${selectedItem5.properties['District']}</p>`;
+          document.getElementById('repLabel').innerHTML = `<p>Representative: ${selectedItem5.properties['REPRESENTATIVE']}</p>`;
         }
 
         const [selectedItem6] = map.queryRenderedFeatures(e.point, {layers: ['constable']});
         if (selectedItem6)
         {
-          document.getElementById('precinctLabel').innerHTML = `<p> Precinct: ${selectedItem6.properties['PRECINCT']}</p>`;
-          document.getElementById('constableLabel').innerHTML = `<p> Constable: ${selectedItem6.properties['CONSTABLE']}</p>`;
-          document.getElementById('jopLabel').innerHTML = `<p> Justice of the Peace: ${selectedItem6.properties['JUSTICEOFT']}</p>`;
+          document.getElementById('precinctLabel').innerHTML = `<p>Precinct: ${selectedItem6.properties['PRECINCT']}</p>`;
+          document.getElementById('constableLabel').innerHTML = `<p>Constable: ${selectedItem6.properties['CONSTABLE']}</p>`;
+          document.getElementById('jopLabel').innerHTML = `<p>Justice of the Peace: ${selectedItem6.properties['JUSTICEOFT']}</p>`;
         }
 
         const [selectedItem7] = map.queryRenderedFeatures(e.point, {layers: ['vote24']});
         if (selectedItem7)
         {
-          document.getElementById('voteLabel').innerHTML = `<p> Precinct: ${selectedItem7.properties['FullNum']}</p>`;
+          document.getElementById('voteLabel').innerHTML = `<p>Precinct: ${selectedItem7.properties['FullNum']}</p>`;
         }
 
         const [selectedItem8] = map.queryRenderedFeatures(e.point, {layers: ['pop21']});
         if (selectedItem8)
         {
-          document.getElementById('cityLabel').innerHTML = `<p> City: ${selectedItem8.properties['CITY']}</p>`;
-          document.getElementById('popLabel').innerHTML = `<p> Population: ${selectedItem8.properties['Population']}</p>`;
+          document.getElementById('cityLabel').innerHTML = `<p>City: ${selectedItem8.properties['CITY']}</p>`;
+          document.getElementById('popLabel').innerHTML = `<p>Population: ${selectedItem8.properties['Population']}</p>`;
         }
 
         const [selectedItem9] = map.queryRenderedFeatures(e.point, {layers: ['wet']});
         if (selectedItem9)
         {
-          document.getElementById('cityLabel2').innerHTML = `<p> City: ${selectedItem9.properties['CITY_NAME']}</p>`;
-          document.getElementById('wetLabel').innerHTML = `<p> Alcohol Zone: ${selectedItem9.properties['ALCOHOL_ZO']}</p>`;
-          document.getElementById('currentLabel').innerHTML = `<p> Current: ${selectedItem9.properties['IsCurrent']}</p>`;
+          document.getElementById('cityLabel2').innerHTML = `<p>City: ${selectedItem9.properties['CITY_NAME']}</p>`;
+          document.getElementById('wetLabel').innerHTML = `<p>Alcohol Zone: ${selectedItem9.properties['ALCOHOL_ZO']}</p>`;
+          document.getElementById('currentLabel').innerHTML = `<p>Current: ${selectedItem9.properties['IsCurrent']}</p>`;
         }
-
-
-
-        const [s01] = map.queryRenderedFeatures(e.point, {layers: ['parcels01']});
-        if (s01)
-        {
-          document.getElementById('owner').innerHTML = `<div>${s01.properties['owner_name']}</div>`;
-          document.getElementById('neighborhood').innerHTML = `<div>${s01.properties['legal_desc']}</div>`;
-          document.getElementById('year').innerHTML = `<div>${'Year built: ' + s01.properties['yr_blt']}</div>`;
-          document.getElementById('acreage').innerHTML = `<div>${'Acreage: ' + s01.properties['legal_acreage'] + ' acres'}</div>`;
-          document.getElementById('parcel_square_feet').innerHTML = `<div>${'Parcel size: ' + s01.properties['land_sqft'] + ' sqft'}</div>`;
-          document.getElementById('living_square_feet').innerHTML = `<div>${'Building Size: ' + s01.properties['living_area'] + ' sqft'}</div>`;
-          document.getElementById('city').innerHTML = `<div>${'Municipality: ' + s01.properties['city']}</div>`;
-          document.getElementById('school').innerHTML = `<div>${'School District: ' + s01.properties['school']}</div>`;
-          document.getElementById('appraised').innerHTML = `<div>${'Appraised: $' + s01.properties['cert_appr_val']}</div>`;
-          document.getElementById('assessed').innerHTML = `<div>${'Assessed: $' + s01.properties['cert_asses_val']}</div>`;
-          document.getElementById('other').innerHTML = `<div>${'Type: ' + s01.properties['main_imprv']}</div>`;
-        }
-
-
 
         const [selectedItem] = map.queryRenderedFeatures(e.point, {layers: ['building']});
         if (selectedItem)
