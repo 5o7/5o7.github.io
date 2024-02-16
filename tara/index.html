@@ -13,7 +13,7 @@
     html, body {margin: 0; padding: 0; height: 100%;}
     #map {width: 100%; flex-grow: 1; height: 100%;}
     #container {display: flex; height: 100%;}
-    #sidebar {width: 300px; flex-shrink: 0; height: 100%; padding: 10px;}
+    #sidebar {width: 150px; flex-shrink: 0; height: 100%; padding: 10px;}
     button {display: block; margin-bottom: 15px;}
   </style>
 
@@ -46,19 +46,20 @@
   <div id='sidebar'>
     
     <pre id='info'></pre>
-    <pre id='owner'>Owner</pre>
-    <pre id='address'>Address</pre>
-    <pre id='neighborhood'>Neighborhood</pre>
-    <pre id='year'>Year Built</pre>
-    <pre id='acreage'>Acreage</pre>
-    <pre id='parcel_square_feet'>Parcel Square Feet</pre>
-    <pre id='living_square_feet'>Living Square Feet</pre>
-    <pre id='city'>Community ID</pre>
-    <pre id='school'>School District</pre>
-    <pre id='appraised'>Apraissed Value</pre>
-    <pre id='assessed'>Assessed Value</pre>
+    <div id='owner' style="white-space: pre-wrap;">Owner</div>
+    <div id='address' style="white-space: pre-wrap;">Address</div>
+    <div id='neighborhood' style="white-space: pre-wrap;">Neighborhood</div>
+    <div id='year' style="white-space: pre-wrap;">Year Built</div>
+    <div id='acreage' style="white-space: pre-wrap;">Acreage</div>
+    <div id='parcel_square_feet' style="white-space: pre-wrap;">Parcel Square Feet</div>
+    <div id='living_square_feet' style="white-space: pre-wrap;">Living Square Feet</div>
+    <div id='city' style="white-space: pre-wrap;">Community ID</div>
+    <div id='school' style="white-space: pre-wrap;">School District</div>
+    <div id='appraised' style="white-space: pre-wrap;">Apraissed Value</div>
+    <div id='assessed' style="white-space: pre-wrap;">Assessed Value</div>
+    <div id='other' style="white-space: pre-wrap;">Type</div>
+
     <!-- <pre id='market'>Market Value</pre> -->
-    <pre id='other'>Type</pre>
     <!-- <pre id='value'>Main Improvement Value</pre> -->
 
 
@@ -71,7 +72,7 @@
     <!-- <button id='toggle-ems'>EMS Districts</button> -->
     <!-- <button id='toggle-sheriff'>Sheriff Deputy Districts</button> -->
 
-    <button id='toggle-hor'>Texas House of Representative</button>
+    <button id='toggle-hor'>Texas House of Reps</button>
     <pre id='districtLabel'></pre>
     <pre id='repLabel'></pre>
 
