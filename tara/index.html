@@ -13,7 +13,7 @@
     html, body {margin: 0; padding: 0; height: 100%;}
     #map {width: 100%; flex-grow: 1; height: 100%;}
     #container {display: flex; height: 100%;}
-    #sidebar {width: 150px; flex-shrink: 0; height: 100%; padding: 10px;}
+    #sidebar {width: 250px; flex-shrink: 0; height: 100%; padding: 10px;}
     button {display: block; margin-bottom: 15px;}
   </style>
 
@@ -28,7 +28,7 @@
       padding: 10px;
       border: none;
       border-radius: 3px;
-      font-size: 9px;
+      font-size: 1px;
       text-align: center;
       color: #222;
       background: #fff;
@@ -556,10 +556,10 @@
 
             document.getElementById('owner').innerHTML = `<p>${selectedItem3.properties['owner_name']}</p>`;
             document.getElementById('neighborhood').innerHTML = `<p>${selectedItem3.properties['legal_desc']}</p>`;
-            document.getElementById('year').innerHTML = `<p>${selectedItem3.properties['yr_blt']}</p>`;
-            document.getElementById('acreage').innerHTML = `<p>${selectedItem3.properties['legal_acreage'] + ' acres'}</p>`;
-            document.getElementById('parcel_square_feet').innerHTML = `<p>${selectedItem3.properties['land_sqft'] + ' sqft'}</p>`;
-            document.getElementById('living_square_feet').innerHTML = `<p>${selectedItem3.properties['living_area'] + ' sqft'}</p>`;
+            document.getElementById('year').innerHTML = `<p>${'Year built: ' + selectedItem3.properties['yr_blt']}</p>`;
+            document.getElementById('acreage').innerHTML = `<p>${'Acreage: ' + selectedItem3.properties['legal_acreage'] + ' acres'}</p>`;
+            document.getElementById('parcel_square_feet').innerHTML = `<p>${'Parcel size: ' + selectedItem3.properties['land_sqft'] + ' sqft'}</p>`;
+            document.getElementById('living_square_feet').innerHTML = `<p>${'Building Size: ' + selectedItem3.properties['living_area'] + ' sqft'}</p>`;
             document.getElementById('city').innerHTML = `<p>${'Municipality: ' + selectedItem3.properties['city']}</p>`;
             document.getElementById('school').innerHTML = `<p>${'School District: ' + selectedItem3.properties['school']}</p>`;
             document.getElementById('appraised').innerHTML = `<p>${'Appraised: $' + selectedItem3.properties['cert_appr_val']}</p>`;
@@ -688,7 +688,7 @@
 
             document.getElementById('owner').innerHTML = `<p>${selectedItem3.properties['owner_name']}</p>`;
             document.getElementById('neighborhood').innerHTML = `<p>${selectedItem3.properties['legal_desc']}</p>`;
-            document.getElementById('year').innerHTML = `<p>${selectedItem3.properties['yr_blt']}</p>`;
+            document.getElementById('year').innerHTML = `<p>${'Year built: ' + selectedItem3.properties['yr_blt']}</p>`;
             document.getElementById('acreage').innerHTML = `<p>${selectedItem3.properties['legal_acreage'] + ' acres'}</p>`;
             document.getElementById('parcel_square_feet').innerHTML = `<p>${selectedItem3.properties['land_sqft'] + ' sqft'}</p>`;
             document.getElementById('living_square_feet').innerHTML = `<p>${selectedItem3.properties['living_area'] + ' sqft'}</p>`;
