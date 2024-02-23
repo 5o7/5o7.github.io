@@ -39,6 +39,7 @@
 <body>
 
 <!-- Load the `mapbox-gl-geocoder` plugin. -->
+
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
@@ -47,7 +48,7 @@
     
     <pre id='info'></pre>
     <div id='appName' style="white-space: pre-wrap;">Denton Property Data v001</div>
-    <div id='appName' style="white-space: pre-wrap;">--------------------------</div>
+    <div id='appName' style="white-space: pre-wrap;">--------------------</div>
     <div id='owner' style="white-space: pre-wrap;">Owner</div>
     <div id='address' style="white-space: pre-wrap;">Address</div>
     <div id='neighborhood' style="white-space: pre-wrap;">Neighborhood</div>
@@ -63,8 +64,6 @@
 
     <!-- <pre id='market'>Market Value</pre> -->
     <!-- <pre id='value'>Main Improvement Value</pre> -->
-
-
 
     <!-- <button id='fly-to-coney'>Fly to Coney Island</button>
     <button id='reset-view'>Reset</button>
@@ -93,66 +92,57 @@
     <button id='toggle-vote24'>Voter Precincts</button>
     <div id='voteLabel' style="white-space: pre-wrap;"></div>
 
-    
-
     <button id='toggle-pop'>Population</button>
     <div id='cityLabel' style="white-space: pre-wrap;"></div>
     <div id='popLabel' style="white-space: pre-wrap;"></div>
+    <button id='toggle-schools'>Schools</button>
+    <div id='schoolLabel' style="white-space: pre-wrap;"></div>
+    <div id='isdLabel' style="white-space: pre-wrap;"></div>
+    <div id='gradeLabel' style="white-space: pre-wrap;"></div>
 
   </div>
   <div id='map'></div>
 </div>
 
 <script>
+  
+
   const INITIAL_CENTER = [-96.920676,33.109958]
-  const INITIAL_ZOOM = 18
+  const INITIAL_ZOOM = 10 //18
   mapboxgl.accessToken = 'pk.eyJ1IjoiNW83IiwiYSI6ImNscnBieXJtaTAzemoyaW1tNmtxcXV1eWUifQ.Tc2rMoWRLgMSKsx11fIDTg';
     const map = new mapboxgl.Map({
         container: 'map',
+
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+
         style: 'mapbox://styles/mapbox/streets-v12',
         center: INITIAL_CENTER,
         zoom: INITIAL_ZOOM
     });
 
-    // // Create a default Marker and add it to the map.
-    // const marker1 = new mapboxgl.Marker()
-    //     .setLngLat([12.554729, 55.70651])
-    //     .addTo(map);
+    // Create a default Marker and add it to the map
 
-    // // Create a default Marker, colored black, rotated 45 degrees.
+    // const marker1 = new mapboxgl.Marker().setLngLat([-96.920674,33.109957]).addTo(map);
+
+    // Create a default Marker, colored black, rotated 45 degrees.
+    // const marker2 = new mapboxgl.Marker({ color: 'black', rotation: 45 })
+    // .setLngLat([-96.920671,33.109959])
+    // .addTo(map);
+
+    // // Create a default Marker, colored black, rotated 45 degrees
     // const marker2 = new mapboxgl.Marker({ color: 'black', rotation: 45 })
     //     .setLngLat([12.65147, 55.608166])
     //     .addTo(map);
 
     // map.setCenter([-70, 20]) // Animates map to a specific location
 
-    const boroughs = [
-    {
-      name: 'Brooklyn',
-      color: '#4287f5',
-      lngLat: [-73.944160, 40.678177]
-    },
-    {
-      name: 'Manhattan',
-      color: '#42f590',
-      lngLat: [-73.971252, 40.783058]
-    },
-    {
-      name: 'Queens',
-      color: '#f5ef42',
-      lngLat: [-73.84, 40.720237]
-    },
-    {
-      name: 'Staten Island',
-      color: '#f542ef',
-      lngLat: [-74.150200, 40.579533]
-    },
-    {
-      name: 'The Bronx',
-      color: '#f5424e',
-      lngLat: [-73.864830, 40.844784]
-    }
+    const boroughs = 
+    [
+      {name: 'Brooklyn', color: '#4287f5', lngLat: [-73.944160, 40.678177]},
+      {name: 'Manhattan', color: '#42f590', lngLat: [-73.971252, 40.783058]},
+      {name: 'Queens', color: '#f5ef42', lngLat: [-73.84, 40.720237]},
+      {ame: 'Staten Island', color: '#f542ef', lngLat: [-74.150200, 40.579533]},
+      {name: 'The Bronx', color: '#f5424e', lngLat: [-73.864830, 40.844784]}
     ]
 
     boroughs.forEach(({name, color, lngLat}) => {
@@ -186,50 +176,40 @@
 
     map.on('load', () => {
 
-      // Add boroughs fill and outline layers
+      // Add layers
 
       map.addSource('boroughs', {type: 'geojson', data: 'borough-boundaries.geojson', promoteId: 'boro_code'})
-      map.addLayer(
-        {'id': 'boroughs', 
+      map.addLayer({
+        'id': 'boroughs', 
         'type': 'fill', 
         'source': 'boroughs', 
         'layout': {}, 
         'paint': {'fill-color': ['match', ['get', 'boro_code'], 1, 'green', 2, 'purple', 'steelblue'], 
-        'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0.5]}, layout: {visibility: 'visible'}}, 
+        'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 1, 0.5]}, 
+        layout: {visibility: 'visible'}}, 
         'water');
       map.addLayer({'id': 'outline', 'type': 'line', 'source': 'boroughs', 'layout': {}, 'paint': {'line-color': '#000', 'line-width': 1}});
 
-      // Add texas layers
 
-      map.addSource('counties', {type: 'geojson', data: 'County_Lines.geojson'});
-      map.addLayer({'id': 'counties', 'type': 'line', 'source': 'counties', 'layout': {}, 'paint': {'line-color': '#000', 'line-width': 1}});
+      map.addSource('schools', {type: 'geojson', data: 'Schools.geojson'});
+      map.addLayer({'id': 'schools', 'type': 'circle', 'layout': {'visibility': 'none'}, 
+        'source': 'schools', 'paint': {'circle-radius': 4, 'circle-color': 'green'}});
 
-      // map.addSource('hoods', {type: 'geojson', data: 'Subdivisons_View.geojson'});
-      // map.addLayer({
-      //   'id': 'hoods',
-      //   'type': 'fill',
-      //   'source': 'hoods', 
-      //   'layout': {}, 
-      //   'paint': {'fill-color': 'black', 
-      //   'fill-opacity': .2}});
+      const iC = ['#25CE3A', '#B7CE25', '#CE3225', '#6ACE25', '#25CE84', '#25C4CE', '#CE7C25', '#257FCE' , '#2A25CE', '#7425CE' , '#B725CE']
+      map.addSource('isd', {type: 'geojson', data: 'ISD.geojson'});
+      map.addLayer({
+        'id': 'isd',
+        'type': 'fill',
+        'source': 'isd', 
+        'layout': {'visibility': 'none'}, 
+        'paint': {'fill-color': ['match', ['get', 'OBJECTID_1'], 
+          1, iC[0], 2, iC[1], 3, iC[2], 4, iC[3], 5, iC[4], 6, iC[5], 
+          7, iC[6], 8, iC[7], 9, iC[8], 10, iC[9], 11, iC[0], 12, iC[1], 
+          13, iC[2], 14, iC[3], 15, iC[4], 16, iC[5], iC[10]],
+        'fill-opacity': .3}});
+      map.addLayer({'id': 'isdO', 'type': 'line', 'source': 'isd', 'layout': {'visibility': 'none'}, 'paint': {'line-color': '#000', 'line-width': 1}});
 
-      // map.addSource('airports', {type: 'geojson', data: 'Airports.geojson'});
-      // map.addLayer({
-      //   'id': 'airports',
-      //   'type': 'fill',
-      //   'source': 'airports', 
-      //   'layout': {}, 
-      //   'paint': {'fill-color': 'black', 
-      //   'fill-opacity': 1}});
-
-      // map.addSource('isd', {type: 'geojson', data: 'school_districts_tx.geojson'});
-      // map.addLayer({
-      //   'id': 'isd',
-      //   'type': 'fill',
-      //   'source': 'isd', 
-      //   'layout': {}, 
-      //   'paint': {'fill-color': 'black', 
-      //   'fill-opacity': 0.0}});
+      // Parcels
 
       map.addSource('parcels01', {type: 'geojson', data: 'Parcels01.geojson'});
       map.addLayer({'id': 'parcels01', 'type': 'fill', 'source': 'parcels01', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
@@ -241,7 +221,6 @@
       map.addLayer({'id': 'parcels04', 'type': 'fill', 'source': 'parcels04', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels05', {type: 'geojson', data: 'Parcels05.geojson'});
       map.addLayer({'id': 'parcels05', 'type': 'fill', 'source': 'parcels05', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
-
       map.addSource('parcels06', {type: 'geojson', data: 'Parcels06.geojson'});
       map.addLayer({'id': 'parcels06', 'type': 'fill', 'source': 'parcels06', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels07', {type: 'geojson', data: 'Parcels07.geojson'});
@@ -258,7 +237,6 @@
       map.addLayer({'id': 'parcels10a', 'type': 'fill', 'source': 'parcels10a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels10b', {type: 'geojson', data: 'Parcels10b.geojson'});
       map.addLayer({'id': 'parcels10b', 'type': 'fill', 'source': 'parcels10b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
-
       map.addSource('parcels11', {type: 'geojson', data: 'Parcels11.geojson'});
       map.addLayer({'id': 'parcels11', 'type': 'fill', 'source': 'parcels11', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels12', {type: 'geojson', data: 'Parcels12.geojson'});
@@ -271,7 +249,6 @@
       map.addLayer({'id': 'parcels15a', 'type': 'fill', 'source': 'parcels15a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels15b', {type: 'geojson', data: 'Parcels15b.geojson'});
       map.addLayer({'id': 'parcels15b', 'type': 'fill', 'source': 'parcels15b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
-
       map.addSource('parcels16a', {type: 'geojson', data: 'Parcels16a.geojson'});
       map.addLayer({'id': 'parcels16a', 'type': 'fill', 'source': 'parcels16a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels16b', {type: 'geojson', data: 'Parcels16b.geojson'});
@@ -292,7 +269,6 @@
       map.addLayer({'id': 'parcels20a', 'type': 'fill', 'source': 'parcels20a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels20b', {type: 'geojson', data: 'Parcels20b.geojson'});
       map.addLayer({'id': 'parcels20b', 'type': 'fill', 'source': 'parcels20b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
-      
       map.addSource('parcels21a', {type: 'geojson', data: 'Parcels21a.geojson'});
       map.addLayer({'id': 'parcels21a', 'type': 'fill', 'source': 'parcels21a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels21b', {type: 'geojson', data: 'Parcels21b.geojson'});
@@ -410,6 +386,14 @@
 
         // If constable is clicked
 
+        const [selectedItem10] = map.queryRenderedFeatures(e.point, {layers: ['schools']});
+        if (selectedItem10)
+        {
+          document.getElementById('schoolLabel').innerHTML = `<p>${selectedItem10.properties['NAME']}</p>`;
+          document.getElementById('isdLabel').innerHTML = `<p>${selectedItem10.properties['ISD']}</p>`;
+          document.getElementById('gradeLabel').innerHTML = `<p>${selectedItem10.properties['GRADE']}</p>`;
+        }
+
         const [selectedItem5] = map.queryRenderedFeatures(e.point, {layers: ['hor']});
         if (selectedItem5)
         {
@@ -454,7 +438,7 @@
           [
             'parcels01', 'parcels02', 'parcels03', 'parcels04', 'parcels05', 'parcels06', 'parcels07', 'parcels08a', 'parcels09a', 'parcels10a',
             'parcels11', 'parcels12', 'parcels13', 'parcels14', 'parcels15a', 'parcels16a', 'parcels17a', 'parcels18a', 'parcels19a', 'parcels20a',
-            'parcels21a', 'parcels22a', 'parcels23', 'parcels08b', 'parcels09b', 'parcels10b', 'parcels15b', 'parcels16b', 'parcels17b', 'parcels18b', 
+            'parcels21a', 'parcels22a', 'parcels23', 'parcels08b', 'parcels09b', 'parcels10b', 'parcels15b', 'parcels16b', 'parcels17b', 'parcels18b',
             'parcels19b', 'parcels20b', 'parcels21b', 'parcels22b'
           ]});
 
@@ -470,7 +454,22 @@
             document.getElementById('parcel_square_feet').innerHTML = `<p>${'Parcel size: ' + selectedItem3.properties['land_sqft'] + ' sqft'}</p>`;
             document.getElementById('living_square_feet').innerHTML = `<p>${'Building Size: ' + selectedItem3.properties['living_area'] + ' sqft'}</p>`;
             document.getElementById('city').innerHTML = `<p>${'Municipality: ' + selectedItem3.properties['city']}</p>`;
-            document.getElementById('school').innerHTML = `<p>${'School District: ' + selectedItem3.properties['school']}</p>`;
+
+
+            var sd = selectedItem3.properties['school']
+            if (sd == 'S01') {sd = 'Argyle ISD'}
+            if (sd == 'S02') {sd = 'Aubrey ISD'}
+            if (sd == 'S05') {sd = 'Denton ISD'}
+            if (sd == 'S07') {sd = 'Krum ISD'}
+            if (sd == 'S08') {sd = 'Lake Dallas ISD'}
+            if (sd == 'S09') {sd = 'Lewisville ISD'}
+            if (sd == 'S10') {sd = 'Little Elm ISD'}
+            if (sd == 'S11') {sd = 'Northwest ISD'}
+            if (sd == 'S12') {sd = 'Pilot Point ISD'}
+            if (sd == 'S13') {sd = 'Ponder ISD'}
+            if (sd == 'S14') {sd = 'Sanger ISD'}
+
+            document.getElementById('school').innerHTML = `<p>${'School District: ' + sd}</p>`;
             document.getElementById('appraised').innerHTML = `<p>${'Appraised: $' + selectedItem3.properties['cert_appr_val']}</p>`;
             document.getElementById('assessed').innerHTML = `<p>${'Assessed: $' + selectedItem3.properties['cert_asses_val']}</p>`;
             document.getElementById('other').innerHTML = `<p>${'Type: ' + selectedItem3.properties['main_imprv']}</p>`;
@@ -526,22 +525,7 @@
     //   map.fitBounds([[-73.738830,40.771043], [-73.738830,40.771043]])
     // })
 
-    // Event that toggles layers
-
-    // document.querySelector('#toggle-boroughs').addEventListener('click', () => 
-    // {
-    //   const isVisible = map.getLayoutProperty('boroughs', 'visibility') === 'visible'
-    //   if (isVisible)
-    //   {
-    //     map.setLayoutProperty('boroughs', 'visibility', 'none')
-    //     map.setLayoutProperty('outline', 'visibility', 'none')
-    //   }
-    //   else
-    //   {
-    //     map.setLayoutProperty('boroughs', 'visibility', 'visible')
-    //     map.setLayoutProperty('outline', 'visibility', 'visible')
-    //   }
-    // })
+    // Events that toggles layers
 
     document.querySelector('#toggle-wet-dry-zones').addEventListener('click', () => 
     {
@@ -555,8 +539,6 @@
       {
         map.setLayoutProperty('wet', 'visibility', 'visible')
         map.setLayoutProperty('wetO', 'visibility', 'visible')
-        // map.setLayoutProperty('ems', 'visibility', 'none')
-        // map.setLayoutProperty('emsO', 'visibility', 'none')
         map.setLayoutProperty('constable', 'visibility', 'none')
         map.setLayoutProperty('constableO', 'visibility', 'none')
         map.setLayoutProperty('hor', 'visibility', 'none')
@@ -568,6 +550,9 @@
         map.setLayoutProperty('flood', 'visibility', 'none')
         map.setLayoutProperty('pop21', 'visibility', 'none') 
         map.setLayoutProperty('pop21O', 'visibility', 'none') 
+        map.setLayoutProperty('schools', 'visibility', 'none') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -580,47 +565,11 @@
       document.getElementById('cityLabel2').innerHTML = `<p></p>`;
       document.getElementById('wetLabel').innerHTML = `<p></p>`;
       document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
 
     })
-
-    // document.querySelector('#toggle-ems').addEventListener('click', () => 
-    // {
-    //   const isVisible = map.getLayoutProperty('ems', 'visibility') === 'visible'
-    //   if (isVisible)
-    //   {
-    //     map.setLayoutProperty('ems', 'visibility', 'none')
-    //     map.setLayoutProperty('emsO', 'visibility', 'none')
-    //   }
-    //   else
-    //   {
-    //     map.setLayoutProperty('ems', 'visibility', 'visible')
-    //     map.setLayoutProperty('emsO', 'visibility', 'visible')
-    //     map.setLayoutProperty('wet', 'visibility', 'none')
-    //     map.setLayoutProperty('wetO', 'visibility', 'none')
-    //     map.setLayoutProperty('constable', 'visibility', 'none')
-    //     map.setLayoutProperty('constableO', 'visibility', 'none')
-    //     map.setLayoutProperty('hor', 'visibility', 'none')
-    //     map.setLayoutProperty('horO', 'visibility', 'none')
-    //     map.setLayoutProperty('sheriff', 'visibility', 'none')
-    //     map.setLayoutProperty('sheriffO', 'visibility', 'none')
-    //     map.setLayoutProperty('vote24', 'visibility', 'none')
-    //     map.setLayoutProperty('vote24O', 'visibility', 'none')
-    //     map.setLayoutProperty('flood', 'visibility', 'none')
-    //     map.setLayoutProperty('pop21', 'visibility', 'none') 
-    //     map.setLayoutProperty('pop21O', 'visibility', 'none') 
-    //   }
-    //   document.getElementById('precinctLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('constableLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('jopLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('districtLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('repLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('voteLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('popLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('cityLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('cityLabel2').innerHTML = `<p></p>`;
-    //   document.getElementById('wetLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('currentLabel').innerHTML = `<p></p>`;
-    // })
 
     document.querySelector('#toggle-constable').addEventListener('click', () => 
     {
@@ -636,8 +585,6 @@
         map.setLayoutProperty('constableO', 'visibility', 'visible')
         map.setLayoutProperty('wet', 'visibility', 'none')
         map.setLayoutProperty('wetO', 'visibility', 'none')
-        // map.setLayoutProperty('ems', 'visibility', 'none')
-        // map.setLayoutProperty('emsO', 'visibility', 'none')
         map.setLayoutProperty('hor', 'visibility', 'none')
         map.setLayoutProperty('horO', 'visibility', 'none')
         map.setLayoutProperty('sheriff', 'visibility', 'none')
@@ -647,6 +594,9 @@
         map.setLayoutProperty('flood', 'visibility', 'none')
         map.setLayoutProperty('pop21', 'visibility', 'none') 
         map.setLayoutProperty('pop21O', 'visibility', 'none') 
+        map.setLayoutProperty('schools', 'visibility', 'none') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -659,6 +609,9 @@
       document.getElementById('cityLabel2').innerHTML = `<p></p>`;
       document.getElementById('wetLabel').innerHTML = `<p></p>`;
       document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
     })
 
     document.querySelector('#toggle-hor').addEventListener('click', () => 
@@ -673,8 +626,6 @@
       {
         map.setLayoutProperty('hor', 'visibility', 'visible')
         map.setLayoutProperty('horO', 'visibility', 'visible')
-        // map.setLayoutProperty('ems', 'visibility', 'none')
-        // map.setLayoutProperty('emsO', 'visibility', 'none')
         map.setLayoutProperty('constable', 'visibility', 'none')
         map.setLayoutProperty('constableO', 'visibility', 'none')
         map.setLayoutProperty('wet', 'visibility', 'none')
@@ -686,6 +637,9 @@
         map.setLayoutProperty('flood', 'visibility', 'none')
         map.setLayoutProperty('pop21', 'visibility', 'none') 
         map.setLayoutProperty('pop21O', 'visibility', 'none') 
+        map.setLayoutProperty('schools', 'visibility', 'none') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -698,41 +652,10 @@
       document.getElementById('cityLabel2').innerHTML = `<p></p>`;
       document.getElementById('wetLabel').innerHTML = `<p></p>`;
       document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
     })
-
-    // document.querySelector('#toggle-sheriff').addEventListener('click', () => 
-    // {
-    //   const isVisible = map.getLayoutProperty('sheriff', 'visibility') === 'visible'
-    //   if (isVisible)
-    //   {
-    //     map.setLayoutProperty('sheriff', 'visibility', 'none')
-    //     map.setLayoutProperty('sheriffO', 'visibility', 'none')
-    //   }
-    //   else
-    //   {
-    //     map.setLayoutProperty('sheriff', 'visibility', 'visible')
-    //     map.setLayoutProperty('sheriffO', 'visibility', 'visible')
-    //     map.setLayoutProperty('ems', 'visibility', 'none')
-    //     map.setLayoutProperty('emsO', 'visibility', 'none')
-    //     map.setLayoutProperty('constable', 'visibility', 'none')
-    //     map.setLayoutProperty('constableO', 'visibility', 'none')
-    //     map.setLayoutProperty('wet', 'visibility', 'none')
-    //     map.setLayoutProperty('wetO', 'visibility', 'none')
-    //     map.setLayoutProperty('hor', 'visibility', 'none')
-    //     map.setLayoutProperty('horO', 'visibility', 'none')
-    //     map.setLayoutProperty('vote24', 'visibility', 'none')
-    //     map.setLayoutProperty('vote24O', 'visibility', 'none')
-    //     map.setLayoutProperty('flood', 'visibility', 'none')
-    //     map.setLayoutProperty('pop21', 'visibility', 'none') 
-    //     map.setLayoutProperty('pop21O', 'visibility', 'none') 
-    //     map.setLayoutProperty('pop20', 'visibility', 'none')
-    //   }
-    //   document.getElementById('precinctLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('constableLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('jopLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('districtLabel').innerHTML = `<p></p>`;
-    //   document.getElementById('repLabel').innerHTML = `<p></p>`;
-    // })
 
     document.querySelector('#toggle-vote24').addEventListener('click', () => 
     {
@@ -746,8 +669,6 @@
       {
         map.setLayoutProperty('vote24', 'visibility', 'visible')
         map.setLayoutProperty('vote24O', 'visibility', 'visible')
-        // map.setLayoutProperty('ems', 'visibility', 'none')
-        // map.setLayoutProperty('emsO', 'visibility', 'none')
         map.setLayoutProperty('constable', 'visibility', 'none')
         map.setLayoutProperty('constableO', 'visibility', 'none')
         map.setLayoutProperty('wet', 'visibility', 'none')
@@ -759,6 +680,9 @@
         map.setLayoutProperty('flood', 'visibility', 'none')
         map.setLayoutProperty('pop21', 'visibility', 'none') 
         map.setLayoutProperty('pop21O', 'visibility', 'none')
+        map.setLayoutProperty('schools', 'visibility', 'none') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -771,6 +695,9 @@
       document.getElementById('cityLabel2').innerHTML = `<p></p>`;
       document.getElementById('wetLabel').innerHTML = `<p></p>`;
       document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
     })
 
     document.querySelector('#toggle-flood').addEventListener('click', () => 
@@ -785,8 +712,6 @@
         map.setLayoutProperty('flood', 'visibility', 'visible')
         map.setLayoutProperty('vote24', 'visibility', 'none')
         map.setLayoutProperty('vote24O', 'visibility', 'none')
-        // map.setLayoutProperty('ems', 'visibility', 'none')
-        // map.setLayoutProperty('emsO', 'visibility', 'none')
         map.setLayoutProperty('constable', 'visibility', 'none')
         map.setLayoutProperty('constableO', 'visibility', 'none')
         map.setLayoutProperty('wet', 'visibility', 'none')
@@ -796,7 +721,10 @@
         map.setLayoutProperty('sheriff', 'visibility', 'none')
         map.setLayoutProperty('sheriffO', 'visibility', 'none')
         map.setLayoutProperty('pop21', 'visibility', 'none') 
-        map.setLayoutProperty('pop21O', 'visibility', 'none') 
+        map.setLayoutProperty('pop21O', 'visibility', 'none')
+        map.setLayoutProperty('schools', 'visibility', 'none') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')   
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -809,6 +737,9 @@
       document.getElementById('cityLabel2').innerHTML = `<p></p>`;
       document.getElementById('wetLabel').innerHTML = `<p></p>`;
       document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
     })
 
     document.querySelector('#toggle-pop').addEventListener('click', () => 
@@ -825,8 +756,6 @@
         map.setLayoutProperty('pop21O', 'visibility', 'visible')
         map.setLayoutProperty('vote24', 'visibility', 'none')
         map.setLayoutProperty('vote24O', 'visibility', 'none')
-        // map.setLayoutProperty('ems', 'visibility', 'none')
-        // map.setLayoutProperty('emsO', 'visibility', 'none')
         map.setLayoutProperty('constable', 'visibility', 'none')
         map.setLayoutProperty('constableO', 'visibility', 'none')
         map.setLayoutProperty('wet', 'visibility', 'none')
@@ -835,6 +764,52 @@
         map.setLayoutProperty('horO', 'visibility', 'none')
         map.setLayoutProperty('sheriff', 'visibility', 'none')
         map.setLayoutProperty('sheriffO', 'visibility', 'none')
+        map.setLayoutProperty('flood', 'visibility', 'none')
+        map.setLayoutProperty('schools', 'visibility', 'none') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')  
+      }
+      document.getElementById('precinctLabel').innerHTML = `<p></p>`;
+      document.getElementById('constableLabel').innerHTML = `<p></p>`;
+      document.getElementById('jopLabel').innerHTML = `<p></p>`;
+      document.getElementById('districtLabel').innerHTML = `<p></p>`;
+      document.getElementById('repLabel').innerHTML = `<p></p>`;
+      document.getElementById('voteLabel').innerHTML = `<p></p>`;
+      document.getElementById('popLabel').innerHTML = `<p></p>`;
+      document.getElementById('cityLabel').innerHTML = `<p></p>`;
+      document.getElementById('cityLabel2').innerHTML = `<p></p>`;
+      document.getElementById('wetLabel').innerHTML = `<p></p>`;
+      document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
+
+    })
+
+    document.querySelector('#toggle-schools').addEventListener('click', () => 
+    {
+      const isVisible = map.getLayoutProperty('schools', 'visibility') === 'visible'
+      if (isVisible)
+      {
+        map.setLayoutProperty('schools', 'visibility', 'none') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')      
+      }
+      else
+      {
+        map.setLayoutProperty('schools', 'visibility', 'visible') 
+        map.setLayoutProperty('isd', 'visibility', 'visible') 
+        map.setLayoutProperty('isdO', 'visibility', 'visible')    
+        map.setLayoutProperty('pop21', 'visibility', 'none')
+        map.setLayoutProperty('pop21O', 'visibility', 'none')
+        map.setLayoutProperty('vote24', 'visibility', 'none')
+        map.setLayoutProperty('vote24O', 'visibility', 'none')
+        map.setLayoutProperty('constable', 'visibility', 'none')
+        map.setLayoutProperty('constableO', 'visibility', 'none')
+        map.setLayoutProperty('wet', 'visibility', 'none')
+        map.setLayoutProperty('wetO', 'visibility', 'none')
+        map.setLayoutProperty('hor', 'visibility', 'none')
+        map.setLayoutProperty('horO', 'visibility', 'none')
         map.setLayoutProperty('flood', 'visibility', 'none')
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
@@ -848,6 +823,9 @@
       document.getElementById('cityLabel2').innerHTML = `<p></p>`;
       document.getElementById('wetLabel').innerHTML = `<p></p>`;
       document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
     })
 
 </script>
