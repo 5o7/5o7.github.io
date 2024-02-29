@@ -28,10 +28,28 @@
       padding: 10px;
       border: none;
       border-radius: 3px;
-      font-size: 1px;
-      text-align: center;
+      font-size: 10px;
+      text-align: left;
       color: #222;
-      background: #fff;
+      background: #eff5d5;
+    }
+  </style>
+
+  <style type="text/css">
+    #sidebar
+    {
+      display: table;
+      position: relative;
+      margin: 0px auto;
+      word-wrap: anywhere;
+      white-space: pre-wrap;
+      padding: 2px;
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+      text-align: left;
+      color: #222;
+      background: #eff5d5;
     }
   </style>
 
@@ -40,75 +58,57 @@
 
 <!-- Load the `mapbox-gl-geocoder` plugin. -->
 
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js">
+</script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
 <div id='container'>
   <div id='sidebar'>
-    
     <pre id='info'></pre>
     <div id='appName' style="white-space: pre-wrap;">Denton Property Data v001</div>
     <div id='appName' style="white-space: pre-wrap;">--------------------</div>
-    <div id='owner' style="white-space: pre-wrap;">Owner</div>
-    <div id='address' style="white-space: pre-wrap;">Address</div>
-    <div id='neighborhood' style="white-space: pre-wrap;">Neighborhood</div>
-    <div id='year' style="white-space: pre-wrap;">Year Built</div>
-    <div id='acreage' style="white-space: pre-wrap;">Acreage</div>
-    <div id='parcel_square_feet' style="white-space: pre-wrap;">Parcel Square Feet</div>
-    <div id='living_square_feet' style="white-space: pre-wrap;">Living Square Feet</div>
-    <div id='city' style="white-space: pre-wrap;">Community ID</div>
-    <div id='school' style="white-space: pre-wrap;">School District</div>
-    <div id='appraised' style="white-space: pre-wrap;">Apraissed Value</div>
-    <div id='assessed' style="white-space: pre-wrap;">Assessed Value</div>
-    <div id='other' style="white-space: pre-wrap;">Type</div>
-
-    <!-- <pre id='market'>Market Value</pre> -->
-    <!-- <pre id='value'>Main Improvement Value</pre> -->
-
-    <!-- <button id='fly-to-coney'>Fly to Coney Island</button>
-    <button id='reset-view'>Reset</button>
-    <button id='fit-to-queens'>Fit to Queens</button>
-    <button id='toggle-boroughs'>Toggle Borough Boundaries</button> -->
-    <!-- <button id='toggle-fire'>Fire Marshall Districts</button> -->
-    <!-- <button id='toggle-ems'>EMS Districts</button> -->
-    <!-- <button id='toggle-sheriff'>Sheriff Deputy Districts</button> -->
-
+    <div id='owner' style="white-space: pre-wrap;"></div>
+    <div id='address' style="white-space: pre-wrap;"></div>
+    <div id='neighborhood' style="white-space: pre-wrap;"></div>
+    <div id='year' style="white-space: pre-wrap;"></div>
+    <div id='acreage' style="white-space: pre-wrap;"></div>
+    <div id='parcel_square_feet' style="white-space: pre-wrap;"></div>
+    <div id='living_square_feet' style="white-space: pre-wrap;"></div>
+    <div id='city' style="white-space: pre-wrap;"></div>
+    <div id='school' style="white-space: pre-wrap;"></div>
+    <div id='appraised' style="white-space: pre-wrap;"></div>
+    <div id='assessed' style="white-space: pre-wrap;"></div>
+    <div id='other' style="white-space: pre-wrap;"></div>
     <button id='toggle-hor'>Texas House of Reps</button>
     <div id='districtLabel' style="white-space: pre-wrap;"></div>
     <div id='repLabel' style="white-space: pre-wrap;"></div>
-
-    <button id='toggle-flood'>Flood Elevation 2019</button>
-
-    <button id='toggle-wet-dry-zones'>Wet and Dry Zones</button>
+    <button id='toggle-flood'>Flood Plane</button>
+    <button id='toggle-wet-dry-zones'>Wet/Dry Zones</button>
     <div id='cityLabel2' style="white-space: pre-wrap;"></div>
     <div id='wetLabel' style="white-space: pre-wrap;"></div>
     <div id='currentLabel' style="white-space: pre-wrap;"></div>
-    
-    <button id='toggle-constable'>Constable Precicts</button>
+    <button id='toggle-constable'>Constable</button>
     <div id='precinctLabel' style="white-space: pre-wrap;"></div>
     <div id='constableLabel' style="white-space: pre-wrap;"></div>
     <div id='jopLabel' style="white-space: pre-wrap;"></div>
-
     <button id='toggle-vote24'>Voter Precincts</button>
     <div id='voteLabel' style="white-space: pre-wrap;"></div>
-
     <button id='toggle-pop'>Population</button>
     <div id='cityLabel' style="white-space: pre-wrap;"></div>
     <div id='popLabel' style="white-space: pre-wrap;"></div>
+    <button id='toggle-sale'>For Sale</button>
     <button id='toggle-schools'>Schools</button>
     <div id='schoolLabel' style="white-space: pre-wrap;"></div>
     <div id='isdLabel' style="white-space: pre-wrap;"></div>
     <div id='gradeLabel' style="white-space: pre-wrap;"></div>
-
   </div>
   <div id='map'></div>
 </div>
-
 <script>
   
 
-  const INITIAL_CENTER = [-96.920676,33.109958]
-  const INITIAL_ZOOM = 10 //18
+  const INITIAL_CENTER = [-97.140552,33.215524]
+  const INITIAL_ZOOM = 12.9 //18
   mapboxgl.accessToken = 'pk.eyJ1IjoiNW83IiwiYSI6ImNscnBieXJtaTAzemoyaW1tNmtxcXV1eWUifQ.Tc2rMoWRLgMSKsx11fIDTg';
     const map = new mapboxgl.Map({
         container: 'map',
@@ -150,7 +150,8 @@
       new mapboxgl.Marker({color: color,scale: .6}).setLngLat(lngLat).setPopup(popup).addTo(map)});
 
 
-    // Add the geocoder control to the map
+    // GEOCODER
+
 
     var geocoder = new MapboxGeocoder(
     {
@@ -162,21 +163,24 @@
       flipCoordinates: true
     })
     map.addControl(geocoder);
-
-    console.log(geocoder)
+    
+    // console.log(geocoder)
 
     var gecoderResponse = null
     geocoder.on('results', function(results) 
     { 
       gecoderResponse = JSON.parse(results.request.response.rawBody)
       gecoderResponse = gecoderResponse['features'][0].place_name
-      console.log(gecoderResponse);
       document.getElementById('address').innerHTML = `<p>${gecoderResponse}</p>`; 
+      
+      // console.log(gecoderResponse);
     })
 
     map.on('load', () => {
 
-      // Add layers
+
+      // BOROUGH
+
 
       map.addSource('boroughs', {type: 'geojson', data: 'borough-boundaries.geojson', promoteId: 'boro_code'})
       map.addLayer({
@@ -189,6 +193,17 @@
         layout: {visibility: 'visible'}}, 
         'water');
       map.addLayer({'id': 'outline', 'type': 'line', 'source': 'boroughs', 'layout': {}, 'paint': {'line-color': '#000', 'line-width': 1}});
+
+
+      // FOR SALE
+
+
+      map.addSource('zillow', {type: 'geojson', data: 'zColony.geojson'});
+      map.addLayer({'id': 'zillow', 'type': 'circle', 'layout': {'visibility': 'none'}, 
+        'source': 'zillow', 'paint': {'circle-radius': 4, 'circle-color': 'orange'}});
+
+
+      // SCHOOL
 
 
       map.addSource('schools', {type: 'geojson', data: 'Schools.geojson'});
@@ -209,44 +224,98 @@
         'fill-opacity': .3}});
       map.addLayer({'id': 'isdO', 'type': 'line', 'source': 'isd', 'layout': {'visibility': 'none'}, 'paint': {'line-color': '#000', 'line-width': 1}});
 
-      // Parcels
 
+      // PARCEL
+
+
+      const o = .1
       map.addSource('parcels01', {type: 'geojson', data: 'Parcels01.geojson'});
       map.addLayer({'id': 'parcels01', 'type': 'fill', 'source': 'parcels01', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels01O', 'type': 'line', 'source': 'parcels01', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels02', {type: 'geojson', data: 'Parcels02.geojson'});
       map.addLayer({'id': 'parcels02', 'type': 'fill', 'source': 'parcels02', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels02O', 'type': 'line', 'source': 'parcels02', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels03', {type: 'geojson', data: 'Parcels03.geojson'});
       map.addLayer({'id': 'parcels03', 'type': 'fill', 'source': 'parcels03', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels03O', 'type': 'line', 'source': 'parcels03', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels04', {type: 'geojson', data: 'Parcels04.geojson'});
       map.addLayer({'id': 'parcels04', 'type': 'fill', 'source': 'parcels04', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels04O', 'type': 'line', 'source': 'parcels04', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
       map.addSource('parcels05', {type: 'geojson', data: 'Parcels05.geojson'});
       map.addLayer({'id': 'parcels05', 'type': 'fill', 'source': 'parcels05', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels05O', 'type': 'line', 'source': 'parcels05', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
       map.addSource('parcels06', {type: 'geojson', data: 'Parcels06.geojson'});
       map.addLayer({'id': 'parcels06', 'type': 'fill', 'source': 'parcels06', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels06O', 'type': 'line', 'source': 'parcels06', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
       map.addSource('parcels07', {type: 'geojson', data: 'Parcels07.geojson'});
       map.addLayer({'id': 'parcels07', 'type': 'fill', 'source': 'parcels07', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels07O', 'type': 'line', 'source': 'parcels07', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels08a', {type: 'geojson', data: 'Parcels08a.geojson'});
       map.addLayer({'id': 'parcels08a', 'type': 'fill', 'source': 'parcels08a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels08aO', 'type': 'line', 'source': 'parcels08a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels08b', {type: 'geojson', data: 'Parcels08b.geojson'});
       map.addLayer({'id': 'parcels08b', 'type': 'fill', 'source': 'parcels08b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels08bO', 'type': 'line', 'source': 'parcels08b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels09a', {type: 'geojson', data: 'Parcels09a.geojson'});
       map.addLayer({'id': 'parcels09a', 'type': 'fill', 'source': 'parcels09a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels09aO', 'type': 'line', 'source': 'parcels09a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels09b', {type: 'geojson', data: 'Parcels09b.geojson'});
       map.addLayer({'id': 'parcels09b', 'type': 'fill', 'source': 'parcels09b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels09bO', 'type': 'line', 'source': 'parcels09b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels10a', {type: 'geojson', data: 'Parcels10a.geojson'});
       map.addLayer({'id': 'parcels10a', 'type': 'fill', 'source': 'parcels10a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels10aO', 'type': 'line', 'source': 'parcels10a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels10b', {type: 'geojson', data: 'Parcels10b.geojson'});
       map.addLayer({'id': 'parcels10b', 'type': 'fill', 'source': 'parcels10b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels10bO', 'type': 'line', 'source': 'parcels10b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels11', {type: 'geojson', data: 'Parcels11.geojson'});
       map.addLayer({'id': 'parcels11', 'type': 'fill', 'source': 'parcels11', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels11O', 'type': 'line', 'source': 'parcels11', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels12', {type: 'geojson', data: 'Parcels12.geojson'});
       map.addLayer({'id': 'parcels12', 'type': 'fill', 'source': 'parcels12', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels12O', 'type': 'line', 'source': 'parcels12', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels13', {type: 'geojson', data: 'Parcels13.geojson'});
       map.addLayer({'id': 'parcels13', 'type': 'fill', 'source': 'parcels13', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels13O', 'type': 'line', 'source': 'parcels13', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels14', {type: 'geojson', data: 'Parcels14.geojson'});
       map.addLayer({'id': 'parcels14', 'type': 'fill', 'source': 'parcels14', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels14O', 'type': 'line', 'source': 'parcels14', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels15a', {type: 'geojson', data: 'Parcels15a.geojson'});
       map.addLayer({'id': 'parcels15a', 'type': 'fill', 'source': 'parcels15a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels15aO', 'type': 'line', 'source': 'parcels15a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
+
+
       map.addSource('parcels15b', {type: 'geojson', data: 'Parcels15b.geojson'});
       map.addLayer({'id': 'parcels15b', 'type': 'fill', 'source': 'parcels15b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addSource('parcels16a', {type: 'geojson', data: 'Parcels16a.geojson'});
@@ -280,6 +349,8 @@
       map.addSource('parcels23', {type: 'geojson', data: 'Parcels23.geojson'});
       map.addLayer({'id': 'parcels23', 'type': 'fill', 'source': 'parcels23', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
 
+      // ALCOHOL SALE
+
       map.addSource('wet', {type: 'geojson', data: 'Local_Option_Zone_(Wet_Dry).geojson'});
       map.addLayer({
         'id': 'wet',
@@ -294,6 +365,8 @@
         'source': 'wet', 
         'layout': {'visibility': 'none'}, 
         'paint': {'line-color': '#000', 'line-width': 1}});
+
+      // HOUSE OF REPRESENTATIVE
 
       map.addSource('hor', {type: 'geojson', data: '2022_Texas_House_of_Representatives.geojson'});
       map.addLayer({
@@ -310,6 +383,8 @@
         'layout': {'visibility': 'none'}, 
         'paint': {'line-color': '#000', 'line-width': 2}});
 
+      // CONSTABLE 
+
       map.addSource('constable', {type: 'geojson', data: '2022_JP___Constable_Precincts.geojson'});
       map.addLayer({
         'id': 'constable',
@@ -324,6 +399,8 @@
         'source': 'constable', 
         'layout': {'visibility': 'none'}, 
         'paint': {'line-color': '#000', 'line-width': 2}});
+
+      // VOTING
 
       map.addSource('vote24', {type: 'geojson', data: '2024_Voter_Precincts.geojson'});
       map.addLayer({
@@ -340,13 +417,35 @@
         'layout': {'visibility': 'none'}, 
         'paint': {'line-color': 'black', 'line-width': 1}});
 
+      // FLOOD
+
       map.addSource('flood', {type: 'geojson', data: 'Base_Flood_Elevation_New_2019.geojson'});
       map.addLayer({
         'id': 'flood', 
         'type': 'line', 
         'source': 'flood', 
         'layout': {'visibility': 'none'}, 
+        'paint': {'line-color': 'black',  'line-width': 2}});
+
+      // COUNTY LINE
+
+      map.addSource('counties', {type: 'geojson', data: 'counties.geojson'});
+      map.addLayer({
+        'id': 'counties', 
+        'type': 'line', 
+        'source': 'counties', 
+        'layout': {}, 
+        'paint': {'line-color': 'black',  'line-width': 1}});
+
+      map.addSource('counties2', {type: 'geojson', data: 'County_Lines.geojson'});
+      map.addLayer({
+        'id': 'counties2', 
+        'type': 'line', 
+        'source': 'counties2', 
+        'layout': {}, 
         'paint': {'line-color': 'black',  'line-width': 3}});
+
+      // POPULATION
 
       map.addSource('pop21', {type: 'geojson', data: 'City_2021_Population_Estimates.geojson'});
       map.addLayer({
@@ -366,10 +465,7 @@
       // map.addSource('parks', {type: 'geojson', data: 'Parks.geojson'});
       // map.addLayer({'id': 'parks', 'type': 'line', 'source': 'parks', 'layout': {}, 'paint': {'line-color': 'yellow', 'line-width': 1}});
 
-      // map.addSource('schools', {type: 'geojson', data: 'Schools.geojson'});
-      // map.addLayer({'id': 'schools', 'type': 'line', 'source': 'schools', 'layout': {}, 'paint': {'line-color': 'yellow', 'line-width': 100}});
-
-      // Get the longitude and latitude  of the mouse
+      // Get the long and lat of the mouse
 
       let lng = null
       let lat = null
@@ -384,7 +480,7 @@
 
       map.on('click', (e) => {
 
-        // If constable is clicked
+        // IF A LAYER IS CLICKED
 
         const [selectedItem10] = map.queryRenderedFeatures(e.point, {layers: ['schools']});
         if (selectedItem10)
@@ -455,7 +551,6 @@
             document.getElementById('living_square_feet').innerHTML = `<p>${'Building Size: ' + selectedItem3.properties['living_area'] + ' sqft'}</p>`;
             document.getElementById('city').innerHTML = `<p>${'Municipality: ' + selectedItem3.properties['city']}</p>`;
 
-
             var sd = selectedItem3.properties['school']
             if (sd == 'S01') {sd = 'Argyle ISD'}
             if (sd == 'S02') {sd = 'Aubrey ISD'}
@@ -475,7 +570,7 @@
             document.getElementById('other').innerHTML = `<p>${'Type: ' + selectedItem3.properties['main_imprv']}</p>`;
           }
 
-          // Set the geocoder with the clicked long and lat
+          // SET GEOCODER WITH THE LONG AND LAT
 
           geocoder.setInput(lng + ', ' + lat);
         }
@@ -543,8 +638,6 @@
         map.setLayoutProperty('constableO', 'visibility', 'none')
         map.setLayoutProperty('hor', 'visibility', 'none')
         map.setLayoutProperty('horO', 'visibility', 'none')
-        map.setLayoutProperty('sheriff', 'visibility', 'none')
-        map.setLayoutProperty('sheriffO', 'visibility', 'none')
         map.setLayoutProperty('vote24', 'visibility', 'none')
         map.setLayoutProperty('vote24O', 'visibility', 'none')
         map.setLayoutProperty('flood', 'visibility', 'none')
@@ -552,7 +645,8 @@
         map.setLayoutProperty('pop21O', 'visibility', 'none') 
         map.setLayoutProperty('schools', 'visibility', 'none') 
         map.setLayoutProperty('isd', 'visibility', 'none') 
-        map.setLayoutProperty('isdO', 'visibility', 'none')  
+        map.setLayoutProperty('isdO', 'visibility', 'none')
+        map.setLayoutProperty('zillow', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -587,8 +681,6 @@
         map.setLayoutProperty('wetO', 'visibility', 'none')
         map.setLayoutProperty('hor', 'visibility', 'none')
         map.setLayoutProperty('horO', 'visibility', 'none')
-        map.setLayoutProperty('sheriff', 'visibility', 'none')
-        map.setLayoutProperty('sheriffO', 'visibility', 'none')
         map.setLayoutProperty('vote24', 'visibility', 'none')
         map.setLayoutProperty('vote24O', 'visibility', 'none')
         map.setLayoutProperty('flood', 'visibility', 'none')
@@ -596,7 +688,8 @@
         map.setLayoutProperty('pop21O', 'visibility', 'none') 
         map.setLayoutProperty('schools', 'visibility', 'none') 
         map.setLayoutProperty('isd', 'visibility', 'none') 
-        map.setLayoutProperty('isdO', 'visibility', 'none')  
+        map.setLayoutProperty('isdO', 'visibility', 'none')
+        map.setLayoutProperty('zillow', 'visibility', 'none')    
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -620,7 +713,7 @@
       if (isVisible)
       {
         map.setLayoutProperty('hor', 'visibility', 'none')
-        map.setLayoutProperty('wetO', 'visibility', 'none')
+        map.setLayoutProperty('horO', 'visibility', 'none')
       }
       else
       {
@@ -630,8 +723,6 @@
         map.setLayoutProperty('constableO', 'visibility', 'none')
         map.setLayoutProperty('wet', 'visibility', 'none')
         map.setLayoutProperty('wetO', 'visibility', 'none')
-        map.setLayoutProperty('sheriff', 'visibility', 'none')
-        map.setLayoutProperty('sheriffO', 'visibility', 'none')
         map.setLayoutProperty('vote24', 'visibility', 'none')
         map.setLayoutProperty('vote24O', 'visibility', 'none')
         map.setLayoutProperty('flood', 'visibility', 'none')
@@ -639,7 +730,8 @@
         map.setLayoutProperty('pop21O', 'visibility', 'none') 
         map.setLayoutProperty('schools', 'visibility', 'none') 
         map.setLayoutProperty('isd', 'visibility', 'none') 
-        map.setLayoutProperty('isdO', 'visibility', 'none')  
+        map.setLayoutProperty('isdO', 'visibility', 'none')
+        map.setLayoutProperty('zillow', 'visibility', 'none')    
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -675,14 +767,13 @@
         map.setLayoutProperty('wetO', 'visibility', 'none')
         map.setLayoutProperty('hor', 'visibility', 'none')
         map.setLayoutProperty('horO', 'visibility', 'none')
-        map.setLayoutProperty('sheriff', 'visibility', 'none')
-        map.setLayoutProperty('sheriffO', 'visibility', 'none')
         map.setLayoutProperty('flood', 'visibility', 'none')
         map.setLayoutProperty('pop21', 'visibility', 'none') 
         map.setLayoutProperty('pop21O', 'visibility', 'none')
         map.setLayoutProperty('schools', 'visibility', 'none') 
         map.setLayoutProperty('isd', 'visibility', 'none') 
-        map.setLayoutProperty('isdO', 'visibility', 'none')  
+        map.setLayoutProperty('isdO', 'visibility', 'none')
+        map.setLayoutProperty('zillow', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -724,7 +815,8 @@
         map.setLayoutProperty('pop21O', 'visibility', 'none')
         map.setLayoutProperty('schools', 'visibility', 'none') 
         map.setLayoutProperty('isd', 'visibility', 'none') 
-        map.setLayoutProperty('isdO', 'visibility', 'none')   
+        map.setLayoutProperty('isdO', 'visibility', 'none')
+        map.setLayoutProperty('zillow', 'visibility', 'none')    
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -762,12 +854,11 @@
         map.setLayoutProperty('wetO', 'visibility', 'none')
         map.setLayoutProperty('hor', 'visibility', 'none')
         map.setLayoutProperty('horO', 'visibility', 'none')
-        map.setLayoutProperty('sheriff', 'visibility', 'none')
-        map.setLayoutProperty('sheriffO', 'visibility', 'none')
         map.setLayoutProperty('flood', 'visibility', 'none')
         map.setLayoutProperty('schools', 'visibility', 'none') 
         map.setLayoutProperty('isd', 'visibility', 'none') 
-        map.setLayoutProperty('isdO', 'visibility', 'none')  
+        map.setLayoutProperty('isdO', 'visibility', 'none')
+        map.setLayoutProperty('zillow', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -811,6 +902,7 @@
         map.setLayoutProperty('hor', 'visibility', 'none')
         map.setLayoutProperty('horO', 'visibility', 'none')
         map.setLayoutProperty('flood', 'visibility', 'none')
+        map.setLayoutProperty('zillow', 'visibility', 'none')  
       }
       document.getElementById('precinctLabel').innerHTML = `<p></p>`;
       document.getElementById('constableLabel').innerHTML = `<p></p>`;
@@ -826,6 +918,47 @@
       document.getElementById('schoolLabel').innerHTML = `<p></p>`;
       document.getElementById('isdLabel').innerHTML = `<p></p>`;
       document.getElementById('gradeLabel').innerHTML = `<p></p>`;
+    })
+
+    document.querySelector('#toggle-sale').addEventListener('click', () => 
+    {
+      const isVisible = map.getLayoutProperty('zillow', 'visibility') === 'visible'
+      if (isVisible)
+      {
+        map.setLayoutProperty('zillow', 'visibility', 'none')     
+      }
+      else
+      {
+        map.setLayoutProperty('zillow', 'visibility', 'visible') 
+        map.setLayoutProperty('isd', 'visibility', 'none') 
+        map.setLayoutProperty('isdO', 'visibility', 'none')    
+        map.setLayoutProperty('pop21', 'visibility', 'none')
+        map.setLayoutProperty('pop21O', 'visibility', 'none')
+        map.setLayoutProperty('vote24', 'visibility', 'none')
+        map.setLayoutProperty('vote24O', 'visibility', 'none')
+        map.setLayoutProperty('constable', 'visibility', 'none')
+        map.setLayoutProperty('constableO', 'visibility', 'none')
+        map.setLayoutProperty('wet', 'visibility', 'none')
+        map.setLayoutProperty('wetO', 'visibility', 'none')
+        map.setLayoutProperty('hor', 'visibility', 'none')
+        map.setLayoutProperty('horO', 'visibility', 'none')
+        map.setLayoutProperty('flood', 'visibility', 'none')
+      }
+      document.getElementById('precinctLabel').innerHTML = `<p></p>`;
+      document.getElementById('constableLabel').innerHTML = `<p></p>`;
+      document.getElementById('jopLabel').innerHTML = `<p></p>`;
+      document.getElementById('districtLabel').innerHTML = `<p></p>`;
+      document.getElementById('repLabel').innerHTML = `<p></p>`;
+      document.getElementById('voteLabel').innerHTML = `<p></p>`;
+      document.getElementById('popLabel').innerHTML = `<p></p>`;
+      document.getElementById('cityLabel').innerHTML = `<p></p>`;
+      document.getElementById('cityLabel2').innerHTML = `<p></p>`;
+      document.getElementById('wetLabel').innerHTML = `<p></p>`;
+      document.getElementById('currentLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
+      document.getElementById('isdLabel').innerHTML = `<p></p>`;
+      document.getElementById('gradeLabel').innerHTML = `<p></p>`;
+      document.getElementById('schoolLabel').innerHTML = `<p></p>`;
     })
 
 </script>
