@@ -56,6 +56,18 @@
 </head>
 <body>
 
+<style>
+    .mapboxgl-popup 
+    {
+        max-width: 400px;
+        font:
+            12px/20px 'Helvetica Neue',
+            Arial,
+            Helvetica,
+            sans-serif;
+    }
+</style>
+
 <!-- Load the `mapbox-gl-geocoder` plugin. -->
 
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js">
@@ -105,7 +117,6 @@
   <div id='map'></div>
 </div>
 <script>
-  
 
   const INITIAL_CENTER = [-97.140552,33.215524]
   const INITIAL_ZOOM = 12.9 //18
@@ -119,22 +130,6 @@
         center: INITIAL_CENTER,
         zoom: INITIAL_ZOOM
     });
-
-    // Create a default Marker and add it to the map
-
-    // const marker1 = new mapboxgl.Marker().setLngLat([-96.920674,33.109957]).addTo(map);
-
-    // Create a default Marker, colored black, rotated 45 degrees.
-    // const marker2 = new mapboxgl.Marker({ color: 'black', rotation: 45 })
-    // .setLngLat([-96.920671,33.109959])
-    // .addTo(map);
-
-    // // Create a default Marker, colored black, rotated 45 degrees
-    // const marker2 = new mapboxgl.Marker({ color: 'black', rotation: 45 })
-    //     .setLngLat([12.65147, 55.608166])
-    //     .addTo(map);
-
-    // map.setCenter([-70, 20]) // Animates map to a specific location
 
     const boroughs = 
     [
@@ -175,6 +170,7 @@
       
       // console.log(gecoderResponse);
     })
+
 
     map.on('load', () => {
 
@@ -232,122 +228,105 @@
       map.addSource('parcels01', {type: 'geojson', data: 'Parcels01.geojson'});
       map.addLayer({'id': 'parcels01', 'type': 'fill', 'source': 'parcels01', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels01O', 'type': 'line', 'source': 'parcels01', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels02', {type: 'geojson', data: 'Parcels02.geojson'});
       map.addLayer({'id': 'parcels02', 'type': 'fill', 'source': 'parcels02', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels02O', 'type': 'line', 'source': 'parcels02', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels03', {type: 'geojson', data: 'Parcels03.geojson'});
       map.addLayer({'id': 'parcels03', 'type': 'fill', 'source': 'parcels03', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels03O', 'type': 'line', 'source': 'parcels03', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels04', {type: 'geojson', data: 'Parcels04.geojson'});
       map.addLayer({'id': 'parcels04', 'type': 'fill', 'source': 'parcels04', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels04O', 'type': 'line', 'source': 'parcels04', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
       map.addSource('parcels05', {type: 'geojson', data: 'Parcels05.geojson'});
       map.addLayer({'id': 'parcels05', 'type': 'fill', 'source': 'parcels05', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels05O', 'type': 'line', 'source': 'parcels05', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
       map.addSource('parcels06', {type: 'geojson', data: 'Parcels06.geojson'});
       map.addLayer({'id': 'parcels06', 'type': 'fill', 'source': 'parcels06', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels06O', 'type': 'line', 'source': 'parcels06', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
       map.addSource('parcels07', {type: 'geojson', data: 'Parcels07.geojson'});
       map.addLayer({'id': 'parcels07', 'type': 'fill', 'source': 'parcels07', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels07O', 'type': 'line', 'source': 'parcels07', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels08a', {type: 'geojson', data: 'Parcels08a.geojson'});
       map.addLayer({'id': 'parcels08a', 'type': 'fill', 'source': 'parcels08a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels08aO', 'type': 'line', 'source': 'parcels08a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels08b', {type: 'geojson', data: 'Parcels08b.geojson'});
       map.addLayer({'id': 'parcels08b', 'type': 'fill', 'source': 'parcels08b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels08bO', 'type': 'line', 'source': 'parcels08b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels09a', {type: 'geojson', data: 'Parcels09a.geojson'});
       map.addLayer({'id': 'parcels09a', 'type': 'fill', 'source': 'parcels09a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels09aO', 'type': 'line', 'source': 'parcels09a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels09b', {type: 'geojson', data: 'Parcels09b.geojson'});
       map.addLayer({'id': 'parcels09b', 'type': 'fill', 'source': 'parcels09b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels09bO', 'type': 'line', 'source': 'parcels09b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels10a', {type: 'geojson', data: 'Parcels10a.geojson'});
       map.addLayer({'id': 'parcels10a', 'type': 'fill', 'source': 'parcels10a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels10aO', 'type': 'line', 'source': 'parcels10a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels10b', {type: 'geojson', data: 'Parcels10b.geojson'});
       map.addLayer({'id': 'parcels10b', 'type': 'fill', 'source': 'parcels10b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels10bO', 'type': 'line', 'source': 'parcels10b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels11', {type: 'geojson', data: 'Parcels11.geojson'});
       map.addLayer({'id': 'parcels11', 'type': 'fill', 'source': 'parcels11', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels11O', 'type': 'line', 'source': 'parcels11', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels12', {type: 'geojson', data: 'Parcels12.geojson'});
       map.addLayer({'id': 'parcels12', 'type': 'fill', 'source': 'parcels12', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels12O', 'type': 'line', 'source': 'parcels12', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels13', {type: 'geojson', data: 'Parcels13.geojson'});
       map.addLayer({'id': 'parcels13', 'type': 'fill', 'source': 'parcels13', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels13O', 'type': 'line', 'source': 'parcels13', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels14', {type: 'geojson', data: 'Parcels14.geojson'});
       map.addLayer({'id': 'parcels14', 'type': 'fill', 'source': 'parcels14', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels14O', 'type': 'line', 'source': 'parcels14', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels15a', {type: 'geojson', data: 'Parcels15a.geojson'});
       map.addLayer({'id': 'parcels15a', 'type': 'fill', 'source': 'parcels15a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
       map.addLayer({'id': 'parcels15aO', 'type': 'line', 'source': 'parcels15a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
-
-
       map.addSource('parcels15b', {type: 'geojson', data: 'Parcels15b.geojson'});
       map.addLayer({'id': 'parcels15b', 'type': 'fill', 'source': 'parcels15b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels15bO', 'type': 'line', 'source': 'parcels15b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels16a', {type: 'geojson', data: 'Parcels16a.geojson'});
       map.addLayer({'id': 'parcels16a', 'type': 'fill', 'source': 'parcels16a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels16aO', 'type': 'line', 'source': 'parcels16a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels16b', {type: 'geojson', data: 'Parcels16b.geojson'});
       map.addLayer({'id': 'parcels16b', 'type': 'fill', 'source': 'parcels16b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels16bO', 'type': 'line', 'source': 'parcels16b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels17a', {type: 'geojson', data: 'Parcels17a.geojson'});
       map.addLayer({'id': 'parcels17a', 'type': 'fill', 'source': 'parcels17a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels17aO', 'type': 'line', 'source': 'parcels17a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels17b', {type: 'geojson', data: 'Parcels17b.geojson'});
       map.addLayer({'id': 'parcels17b', 'type': 'fill', 'source': 'parcels17b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels17bO', 'type': 'line', 'source': 'parcels17b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels18a', {type: 'geojson', data: 'Parcels18a.geojson'});
       map.addLayer({'id': 'parcels18a', 'type': 'fill', 'source': 'parcels18a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels18aO', 'type': 'line', 'source': 'parcels18a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels18b', {type: 'geojson', data: 'Parcels18b.geojson'});
       map.addLayer({'id': 'parcels18b', 'type': 'fill', 'source': 'parcels18b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels18bO', 'type': 'line', 'source': 'parcels18b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels19a', {type: 'geojson', data: 'Parcels19a.geojson'});
       map.addLayer({'id': 'parcels19a', 'type': 'fill', 'source': 'parcels19a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels19aO', 'type': 'line', 'source': 'parcels19a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels19b', {type: 'geojson', data: 'Parcels19b.geojson'});
       map.addLayer({'id': 'parcels19b', 'type': 'fill', 'source': 'parcels19b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels19bO', 'type': 'line', 'source': 'parcels19b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels20a', {type: 'geojson', data: 'Parcels20a.geojson'});
       map.addLayer({'id': 'parcels20a', 'type': 'fill', 'source': 'parcels20a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels20aO', 'type': 'line', 'source': 'parcels20a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels20b', {type: 'geojson', data: 'Parcels20b.geojson'});
       map.addLayer({'id': 'parcels20b', 'type': 'fill', 'source': 'parcels20b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels20bO', 'type': 'line', 'source': 'parcels20b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels21a', {type: 'geojson', data: 'Parcels21a.geojson'});
       map.addLayer({'id': 'parcels21a', 'type': 'fill', 'source': 'parcels21a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels21aO', 'type': 'line', 'source': 'parcels21a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels21b', {type: 'geojson', data: 'Parcels21b.geojson'});
       map.addLayer({'id': 'parcels21b', 'type': 'fill', 'source': 'parcels21b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels21bO', 'type': 'line', 'source': 'parcels21b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels22a', {type: 'geojson', data: 'Parcels22a.geojson'});
       map.addLayer({'id': 'parcels22a', 'type': 'fill', 'source': 'parcels22a', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels22aO', 'type': 'line', 'source': 'parcels22a', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels22b', {type: 'geojson', data: 'Parcels22b.geojson'});
       map.addLayer({'id': 'parcels22b', 'type': 'fill', 'source': 'parcels22b', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels22bO', 'type': 'line', 'source': 'parcels22b', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
       map.addSource('parcels23', {type: 'geojson', data: 'Parcels23.geojson'});
       map.addLayer({'id': 'parcels23', 'type': 'fill', 'source': 'parcels23', 'layout': {}, 'paint': {'fill-color': 'black', 'fill-opacity': 0}});
+      map.addLayer({'id': 'parcels23O', 'type': 'line', 'source': 'parcels23', 'layout': {}, 'paint': {'line-color': 'black', 'line-width': 1, 'line-opacity': o}});
 
       // ALCOHOL SALE
 
@@ -462,10 +441,9 @@
         'layout': {'visibility': 'none'}, 
         'paint': {'line-color': 'black', 'line-width': 1}});
 
-      // map.addSource('parks', {type: 'geojson', data: 'Parks.geojson'});
-      // map.addLayer({'id': 'parks', 'type': 'line', 'source': 'parks', 'layout': {}, 'paint': {'line-color': 'yellow', 'line-width': 1}});
 
-      // Get the long and lat of the mouse
+      // MOUSE LONGITUDE AND LATITUDE
+
 
       let lng = null
       let lat = null
@@ -476,14 +454,37 @@
         document.getElementById('info').innerHTML = JSON.stringify(e.lngLat.wrap());
       });
 
-      // Check for a click
+
+      // CHECK FOR A CLICK
+
 
       map.on('click', (e) => {
 
+
         // IF A LAYER IS CLICKED
 
-        const [selectedItem10] = map.queryRenderedFeatures(e.point, {layers: ['schools']});
-        if (selectedItem10)
+
+        const [select11] = map.queryRenderedFeatures(e.point, {layers: ['zillow']});
+        if (select11)
+        {
+          a1 = select11.properties['streetAddress'];
+          a2 = select11.properties['state'];
+          a3 = select11.properties['zipcode'];
+          a4 = select11.properties['imgSrc'];
+          a5 = select11.properties['homeType'];
+          a6 = select11.properties['livingArea'];
+          a7 = select11.properties['bedrooms'];
+          a8 = select11.properties['bathrooms'];
+          a9 = select11.properties['lotAreaValue'];
+          a10 = select11.properties['price'];
+          a11 = select11.properties['taxAssessedValue'];
+
+          const description = '<strong>' + a1 + ', ' + a2 + ' ' + a3 + '</strong><p><a href="' + a4 + '" target="_blank"><em>Image</em></a><p></p>Type:  ' + a5 + '<br>Living Area: ' + a6 + ' sqft<br>' + a7 + ' Bedrooms / ' + a8 + ' Bathrooms<br>Price: $' + a10 + '<br>Tax Assessed Value: $' + a11 + '</p>'; 
+          new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(description).addTo(map);
+        };
+
+        const [select10] = map.queryRenderedFeatures(e.point, {layers: ['schools']});
+        if (select10)
         {
           document.getElementById('schoolLabel').innerHTML = `<p>${selectedItem10.properties['NAME']}</p>`;
           document.getElementById('isdLabel').innerHTML = `<p>${selectedItem10.properties['ISD']}</p>`;
@@ -526,11 +527,7 @@
           document.getElementById('currentLabel').innerHTML = `<p>Current: ${selectedItem9.properties['IsCurrent']}</p>`;
         }
 
-        const [selectedItem] = map.queryRenderedFeatures(e.point, {layers: ['building']});
-        if (selectedItem)
-        {
-
-          const [selectedItem3] = map.queryRenderedFeatures(e.point, {layers: 
+        const [selectedItem3] = map.queryRenderedFeatures(e.point, {layers: 
           [
             'parcels01', 'parcels02', 'parcels03', 'parcels04', 'parcels05', 'parcels06', 'parcels07', 'parcels08a', 'parcels09a', 'parcels10a',
             'parcels11', 'parcels12', 'parcels13', 'parcels14', 'parcels15a', 'parcels16a', 'parcels17a', 'parcels18a', 'parcels19a', 'parcels20a',
@@ -568,7 +565,6 @@
             document.getElementById('appraised').innerHTML = `<p>${'Appraised: $' + selectedItem3.properties['cert_appr_val']}</p>`;
             document.getElementById('assessed').innerHTML = `<p>${'Assessed: $' + selectedItem3.properties['cert_asses_val']}</p>`;
             document.getElementById('other').innerHTML = `<p>${'Type: ' + selectedItem3.properties['main_imprv']}</p>`;
-          }
 
           // SET GEOCODER WITH THE LONG AND LAT
 
@@ -960,7 +956,6 @@
       document.getElementById('gradeLabel').innerHTML = `<p></p>`;
       document.getElementById('schoolLabel').innerHTML = `<p></p>`;
     })
-
 </script>
 
 </body>
