@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Tara</title>
+ 
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    #dropdown-container { position: absolute; top: 10px; left: 10px; z-index: 1; }
+    .dropdown { background-color: 'white'; color: black; border: none; padding: 10px 20px; cursor: pointer; }
+    .dropdown:hover { background-color: 'white'; }
+  </style>
+
+  <style type="text/css">
+    #info
+    {
+      display: table;
+      position: relative;
+      margin: 0px auto;
+      word-wrap: anywhere;
+      white-space: pre-wrap;
+      padding: 10px;
+      border: none;
+      border-radius: .1px;
+      font-size: .01px;
+      text-align: left;
+      color: #222;
+      background: #eff5d5;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id='container'>
+  <div id='sidebar'>
+    <pre id='info'></pre>
+  </div>
+  <div id="dropdown-container">
+  <select id="myDropdown" class="dropdown">
+    <option value="option1">Denton Property Data</option>
+    <option value="option2">For Sale on Zillow</option>
+    <option value="option3">Schools and Districts</option>
+    <option value="option4">City Populations</option>
+    <option value="option5">Voter Precincts</option>
+    <option value="option6">Constables</option>
+    <option value="option7">Sherrifs</option>
+    <option value="option8">Crime</option>
+  </select>
+</div>
+  <div id='map'></div>
+</div>
+
+<style>
+    .mapboxgl-popup 
+    {
+        max-width: 400px;
+        font:
+            12px/20px 'Helvetica Neue',
+            Arial,
+            Helvetica,
+            sans-serif;
+    }
+</style>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiNW83IiwiYSI6ImNscnBieXJtaTAzemoyaW1tNmtxcXV1eWUifQ.Tc2rMoWRLgMSKsx11fIDTg';
+  const map = new mapboxgl.Map({
+    container: 'map', 
+    style: 'mapbox://styles/mapbox/standard', 
+    center: [-97.13,33.16],
+    pitch: 40,
+    bearing: 0, 
+    zoom: 10});
+
+  // GEOCODER
+
+  var geocoder = new MapboxGeocoder(
+  {
+    accessToken: mapboxgl.accessToken, 
+    mapboxgl: mapboxgl, 
+    zoom: 19,
+    reverseGeocode: true,
+    enableGeolocation: true,
+    flipCoordinates: true
+  })
+  // map.addControl(geocoder);
+  // console.log(geocoder)
+  var gecoderResponse = null
+  geocoder.on('results', function(results) 
+  { 
+    gecoderResponse = JSON.parse(results.request.response.rawBody)
+    gecoderResponse = gecoderResponse['features'][0].place_name
+    document.getElementById('address').innerHTML = `<p>${gecoderResponse}</p>`; 
+    // console.log(gecoderResponse);
+  })
+
+  // ADD LAYERS
+
+  map.on('load', () => {
+
+    // COUNTY LINE
+
+    map.addSource('counties2', {type: 'geojson', data: 'County_Lines.geojson'});
+    map.addLayer({
+      id: 'counties2', 
+      type: 'line', 
+      source: 'counties2', 
+      layout: {}, 
+      paint: {'line-color': 'black',  'line-width': 2}});
+
+    // PARCELS
+
+    const o1 = .1
+    const o2 = .05
+
+    const parcels = ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34']
+
+    const parcelLayers = 
+    [
+      { id: 'p01', geojson: 'p01.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p02', geojson: 'p02.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p03', geojson: 'p03.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p04', geojson: 'p04.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p05', geojson: 'p05.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p06', geojson: 'p06.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p07', geojson: 'p07.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p08', geojson: 'p08.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p09', geojson: 'p09.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p10', geojson: 'p10.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p11', geojson: 'p11.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p12', geojson: 'p12.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p13', geojson: 'p13.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p14', geojson: 'p14.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p15', geojson: 'p15.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p16', geojson: 'p16.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p17', geojson: 'p17.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p18', geojson: 'p18.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p19', geojson: 'p19.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p20', geojson: 'p20.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p21', geojson: 'p21.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p22', geojson: 'p22.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p23', geojson: 'p23.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p24', geojson: 'p24.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p25', geojson: 'p25.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p26', geojson: 'p26.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p27', geojson: 'p27.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p28', geojson: 'p28.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p29', geojson: 'p29.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p30', geojson: 'p30.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p31', geojson: 'p31.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p32', geojson: 'p32.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p33', geojson: 'p33.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
+      { id: 'p34', geojson: 'p34.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] }
+    ];
+
+    parcelLayers.forEach(layer => {
+      map.addSource(layer.id, { type: 'geojson', data: layer.geojson, promoteId: layer.promoteId });
+      map.addLayer({ id: layer.id, type: 'fill', source: layer.id, layout: {'visibility': 'visible'},
+        paint: 
+        {
+          'fill-color': 'black',
+          'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], layer.opacity[0], layer.opacity[1]]}
+        });
+    });
+
+    // const otherLayers = [isd', 'hor', 'constable', 'vote24', 'pop21']
+
+    const otherLayers = ['pop21']
+
+    map.addSource('zillow', {type: 'geojson', data: 'zColony.geojson'});
+    map.addLayer({'id': 'zillow', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'zillow', 'paint': {'circle-radius': 5, 'circle-color': 'orange'}});
+    
+
+    map.addSource('schools', {type: 'geojson', data: 'Schools.geojson'});
+    map.addLayer({'id': 'schools', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'schools', 'paint': {'circle-radius': 5, 'circle-color': 'green'}});
+
+    const iC = ['#25CE3A', '#B7CE25', '#CE3225', '#6ACE25', '#25CE84', '#25C4CE', '#CE7C25', '#257FCE' , '#2A25CE', '#7425CE' , '#B725CE']
+    map.addSource('isd', {type: 'geojson', data: 'ISD.geojson'});
+    map.addLayer({
+      'id': 'isd',
+      'type': 'fill',
+      'source': 'isd', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'fill-color': ['match', ['get', 'OBJECTID_1'], 
+        1, iC[0], 2, iC[1], 3, iC[2], 4, iC[3], 5, iC[4], 6, iC[5], 
+        7, iC[6], 8, iC[7], 9, iC[8], 10, iC[9], 11, iC[0], 12, iC[1], 
+        13, iC[2], 14, iC[3], 15, iC[4], 16, iC[5], iC[10]],
+      'fill-opacity': .2}});
+    map.addLayer({'id': 'isdO', 'type': 'line', 'source': 'isd', 'layout': {'visibility': 'none'}, 'paint': {'line-color': '#000', 'line-width': 1}});
+
+    // HOUSE OF REPS
+
+    map.addSource('hor', {type: 'geojson', data: '2022_Texas_House_of_Representatives.geojson'});
+    map.addLayer({
+      'id': 'hor',
+      'type': 'fill',
+      'source': 'hor', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'fill-color': ['match', ['get', 'OBJECTID'], 1, 'green', 2, 'purple', 3, 'yellow', 4, 'red', 'orange'], 
+      'fill-opacity': 0.3}});
+    map.addLayer({
+      'id': 'horO', 
+      'type': 'line', 
+      'source': 'hor', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': '#000', 'line-width': 2}});
+
+    // CONSTABLE 
+
+    map.addSource('constable', {type: 'geojson', data: '2022_JP___Constable_Precincts.geojson'});
+    map.addLayer({
+      'id': 'constable',
+      'type': 'fill',
+      'source': 'constable', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'fill-color': ['match', ['get', 'PRECINCT'], 1, 'green', 2, 'purple', 3, 'yellow', 4, 'red', 5, 'orange', 'blue'], 
+      'fill-opacity': 0.2}});
+    map.addLayer({
+      'id': 'constableO', 
+      'type': 'line', 
+      'source': 'constable', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': '#000', 'line-width': 1}});
+
+    // VOTING
+
+    map.addSource('vote24', {type: 'geojson', data: '2024_Voter_Precincts.geojson'});
+    map.addLayer({
+      'id': 'vote24',
+      'type': 'fill',
+      'source': 'vote24', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'fill-color': 'black', 
+      'fill-opacity': 0.3}});
+    map.addLayer({
+      'id': 'vote24O', 
+      'type': 'line', 
+      'source': 'vote24', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': 'black', 'line-width': 1}});
+
+    // FLOOD
+
+    map.addSource('flood', {type: 'geojson', data: 'Base_Flood_Elevation_New_2019.geojson'});
+    map.addLayer({
+      'id': 'flood', 
+      'type': 'line', 
+      'source': 'flood', 
+      'layout': {}, 
+      'paint': {'line-color': '#5dc1f0',  'line-width': 1.2, 'line-opacity': .7}});
+    
+    // POPULATION
+
+    map.addSource('pop21', {type: 'geojson', data: 'City_2021_Population_Estimates.geojson'});
+    map.addLayer({
+      'id': 'pop21',
+      'type': 'fill',
+      'source': 'pop21', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'fill-color': ['match', ['get', 'FID'], 
+        1, iC[0], 2, iC[1], 3, iC[2], 4, iC[3], 5, iC[4], 6, iC[5], 
+        7, iC[6], 8, iC[7], 9, iC[8], 10, iC[9], 11, iC[0], 12, iC[1], 
+        13, iC[2], 14, iC[3], 15, iC[4], 16, iC[5], 17, iC[0], 18, iC[1],
+        19, iC[2], 20, iC[3], 21, iC[4], 22, iC[5], 23, iC[6], 24, iC[7], 
+        25, iC[8], 26, iC[9], 27, iC[0], 28, iC[1], 29, iC[2], 30, iC[3], 
+        31, iC[4], 32, iC[5], 33, iC[6], 34, iC[7], iC[10]], 'fill-opacity': 0.3}});
+    map.addLayer({
+      'id': 'pop21O', 
+      'type': 'line', 
+      'source': 'pop21', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': 'black', 'line-width': 1}});
+
+    // MOUSE LONG AND LAT
+
+    let lng = null
+    let lat = null
+    map.on('mousemove', (e) => 
+    {
+      lng = e.lngLat['lng']
+      lat = e.lngLat['lat']
+      document.getElementById('info').innerHTML = JSON.stringify(e.lngLat.wrap());
+    });
+
+    // CHECK FOR A CLICK
+
+    map.on('click', (e) => {
+
+      // PARCEL
+
+      const [selectParcel] = map.queryRenderedFeatures(e.point, {layers: parcels});
+
+        if (selectParcel)
+        {
+          b1 = selectParcel.properties['addr_line2'];
+          b2 = selectParcel.properties['addr_city'];
+          b3 = selectParcel.properties['addr_state'];
+          b4 = selectParcel.properties['addr_zip'];
+          b5 = selectParcel.properties['owner_name'];
+          b6 = selectParcel.properties['legal_desc'];
+          b7 = selectParcel.properties['yr_blt'];
+          b8 = selectParcel.properties['legal_acreage'];
+          b9 = selectParcel.properties['land_sqft'];
+          b10 = selectParcel.properties['living_area'];
+          b11 = selectParcel.properties['school'];
+          if (b11 == 'S01') {b11 = 'Argyle ISD'}
+          if (b11 == 'S02') {b11 = 'Aubrey ISD'}
+          if (b11 == 'S05') {b11 = 'Denton ISD'}
+          if (b11 == 'S07') {b11 = 'Krum ISD'}
+          if (b11 == 'S08') {b11 = 'Lake Dallas ISD'}
+          if (b11 == 'S09') {b11 = 'Lewisville ISD'}
+          if (b11 == 'S10') {b11 = 'Little Elm ISD'}
+          if (b11 == 'S11') {b11 = 'Northwest ISD'}
+          if (b11 == 'S12') {b11 = 'Pilot Point ISD'}
+          if (b11 == 'S13') {b11 = 'Ponder ISD'}
+          if (b11 == 'S14') {b11 = 'Sanger ISD'}
+          b12 = selectParcel.properties['cert_appr_val'];
+          b13 = selectParcel.properties['cert_asses_val'];
+          b14 = selectParcel.properties['main_imprv'];
+
+          const descrip = '<strong>' + b1 + '<br>' + b2 + ', ' + b3 + ' ' + b4 +'</strong><p>Owner:  ' + b5 + '<br>Legal Descrip: ' + b6+ '<br>Year Built: ' + b7 + '<br>Acreage: ' + b8 + '<br>Parcel Size: ' + b9 + '<br>Building Size: ' + b10 + '<br>School Dist: ' + b11 + '<br>Appraised: $' + b12 + '<br>Assessed: $' + b13 + '<br>Type: ' + b14 + '</p>'; 
+          
+          new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      }
+
+      // ZILLOW
+
+      const [selectZillow] = map.queryRenderedFeatures(e.point, {layers: ['zillow']});
+      if (selectZillow)
+      {
+        a1 = selectZillow.properties['streetAddress'];
+        a2 = selectZillow.properties['state'];
+        a3 = selectZillow.properties['zipcode'];
+        a4 = selectZillow.properties['imgSrc'];
+        a5 = selectZillow.properties['homeType'];
+        a6 = selectZillow.properties['livingArea'];
+        a7 = selectZillow.properties['bedrooms'];
+        a8 = selectZillow.properties['bathrooms'];
+        a9 = selectZillow.properties['lotAreaValue'];
+        a10 = selectZillow.properties['price'];
+        a11 = selectZillow.properties['taxAssessedValue'];
+
+        const descrip = '<strong>FOR SALE<br>' + a1 + ', ' + a2 + ' ' + a3 + '</strong><p><a href="' + a4 + '" target="_blank"><em>Image</em></a><p></p>Type:  ' + a5 + '<br>Living Area: ' + a6 + ' sqft<br>' + a7 + ' Bedrooms / ' + a8 + ' Bathrooms<br>Price: $' + a10 + '<br>Tax Assessed Value: $' + a11 + '</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // SCHOOL
+
+      const [selectSchool] = map.queryRenderedFeatures(e.point, {layers: ['schools']});
+      if (selectSchool)
+      {
+        s1 = selectSchool.properties['NAME'];
+        s2 = selectSchool.properties['GRADE'];
+        s3 = selectSchool.properties['Address'];
+        s4 = selectSchool.properties['ISD'];
+        
+        const descrip = '<strong>' + s1 + ' ' + s2 + '</strong><p>' + s3 + '<br>' + s4 + ' School District</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // CITY
+
+      const [selectCity] = map.queryRenderedFeatures(e.point, {layers: ['pop21']});
+      if (selectCity)
+      {
+        s1 = selectCity.properties['CITY'];
+        s2 = selectCity.properties['Population'];
+
+        const descrip = '<strong>' + s1 + '</strong><p>Population: ' + s2 + '</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // CONSTABLE
+
+      const [selectConstable] = map.queryRenderedFeatures(e.point, {layers: ['constable']});
+      if (selectConstable)
+      {
+        s1 = selectConstable.properties['PRECINCT'];
+        s2 = selectConstable.properties['CONSTABLE'];
+        s3 = selectConstable.properties['JUSTICEOFT'];
+
+        const descrip = '<strong>Precinct: ' + s1 + '</strong><p>Constable: ' + s2 + '<br>Justice of the Peace: ' + s3 + '</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      const [selectVoterPrecinct] = map.queryRenderedFeatures(e.point, {layers: ['vote24']});
+      if (selectVoterPrecinct)
+      {
+        s1 = selectVoterPrecinct.properties['FullNum'];
+
+        const descrip = '<strong>Precinct: ' + s1 + '</strong>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // SET GEOCODER WITH THE LONG AND LAT
+
+      geocoder.setInput(lng + ', ' + lat);
+
+    })
+
+    // HOVER
+    let hoverStateIds = {};
+    parcels.forEach(layerId => {
+      map.on('mousemove', layerId, (e) => {
+        if (e.features.length > 0) 
+        {
+          const hoverId = e.features[0].id;
+          if (hoverStateIds[layerId]) 
+          {
+            map.setFeatureState({ source: layerId, id: hoverStateIds[layerId] }, { hover: false });
+          }
+          hoverStateIds[layerId] = hoverId;
+          map.setFeatureState({ source: layerId, id: hoverId }, { hover: true });
+        }
+      });
+
+      map.on('mouseleave', layerId, () => {
+        if (hoverStateIds[layerId]) 
+        {
+          map.setFeatureState({ source: layerId, id: hoverStateIds[layerId] }, { hover: false });
+          hoverStateIds[layerId] = null;
+        }
+      });
+    });
+
+    // DROP DOWN CHANGE EVENT LISTENER
+
+    document.getElementById('myDropdown').addEventListener('change', function() {
+
+      var selectedOption = this.value;
+      
+      const parcelsVisible = map.getLayoutProperty('p01', 'visibility') === 'visible'
+      const parcels = ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34'];
+      parcels.forEach(parcel => { map.setLayoutProperty(parcel, 'visibility', 'none');});
+      map.setLayoutProperty('zillow', 'visibility', 'none')
+      map.setLayoutProperty('schools', 'visibility', 'none') 
+      map.setLayoutProperty('isd', 'visibility', 'none') 
+      map.setLayoutProperty('isdO', 'visibility', 'none')
+      map.setLayoutProperty('pop21', 'visibility', 'none') 
+      map.setLayoutProperty('pop21O', 'visibility', 'none')
+      map.setLayoutProperty('vote24', 'visibility', 'none')
+      map.setLayoutProperty('vote24O', 'visibility', 'none')
+      map.setLayoutProperty('constable', 'visibility', 'none')
+      map.setLayoutProperty('constableO', 'visibility', 'none')
+      switch(selectedOption) 
+      {
+        case 'option1':
+          parcels.forEach(parcel => { map.setLayoutProperty(parcel, 'visibility', 'visible');});
+          break;
+        case 'option2':
+          map.setLayoutProperty('zillow', 'visibility', 'visible')
+          break;
+        case 'option3':
+          map.setLayoutProperty('schools', 'visibility', 'visible') 
+          map.setLayoutProperty('isd', 'visibility', 'visible') 
+          map.setLayoutProperty('isdO', 'visibility', 'visible')
+          break;
+        case 'option4':
+          map.setLayoutProperty('pop21', 'visibility', 'visible') 
+          map.setLayoutProperty('pop21O', 'visibility', 'visible')
+          break;
+        case 'option5':
+          map.setLayoutProperty('vote24', 'visibility', 'visible')
+          map.setLayoutProperty('vote24O', 'visibility', 'visible')
+          break;
+        case 'option6':
+          map.setLayoutProperty('constable', 'visibility', 'visible')
+          map.setLayoutProperty('constableO', 'visibility', 'visible')
+          break;
+        case 'option7':
+          console.log("It's an apple.");
+          break;
+        case 'option8':
+          console.log("It's a banana.");
+          break;
+        default:
+          console.log("Unknown option.");
+      }
+    });
+  });
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
