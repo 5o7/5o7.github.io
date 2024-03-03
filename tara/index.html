@@ -47,11 +47,13 @@
     <option value="option1">Denton Property Data</option>
     <option value="option2">For Sale on Zillow</option>
     <option value="option3">Schools and Districts</option>
-    <option value="option4">City Populations</option>
-    <option value="option5">Voter Precincts</option>
-    <option value="option6">Constables</option>
-    <option value="option7">Sherrifs</option>
-    <option value="option8">Crime</option>
+    <option value="option4">House Representatives</option>
+    <option value="option5">City Populations</option>
+    <option value="option6">Voter Precincts</option>
+    <option value="option7">Constables</option>
+    <option value="option8">Sherrifs</option>
+    <option value="option9">Development Permits</option>
+    <option value="option10">Utility Permits</option>
   </select>
 </div>
   <div id='map'></div>
@@ -79,8 +81,10 @@
     style: 'mapbox://styles/mapbox/standard', 
     center: [-97.13,33.16],
     pitch: 40,
-    bearing: 0, 
     zoom: 10});
+
+  var maxBounds = [[-97.994957,32.479705], [-96.030547,33.761433]];
+  map.setMaxBounds(maxBounds);
 
   // GEOCODER
 
@@ -173,13 +177,26 @@
         });
     });
 
-    // const otherLayers = [isd', 'hor', 'constable', 'vote24', 'pop21']
+    // UTILITY PERMITS
 
-    const otherLayers = ['pop21']
+    map.addSource('utility', {type: 'geojson', data: 'utility.geojson'});
+    map.addLayer({'id': 'utility', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'utility', 'paint': {'circle-radius': 5, 'circle-color': 'purple'}});
+
+    // DEVELOPMENT PERMITS
+
+    map.addSource('dev1', {type: 'geojson', data: 'dev1.geojson'});
+    map.addSource('dev2', {type: 'geojson', data: 'dev2.geojson'});
+    map.addSource('dev3', {type: 'geojson', data: 'dev3.geojson'});
+    map.addLayer({'id': 'dev1', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'dev1', 'paint': {'circle-radius': 5, 'circle-color': 'pink'}});
+    map.addLayer({'id': 'dev2', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'dev2', 'paint': {'circle-radius': 5, 'circle-color': 'pink'}});
+    map.addLayer({'id': 'dev3', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'dev3', 'paint': {'circle-radius': 5, 'circle-color': 'pink'}});
+
+    // ZILLOW
 
     map.addSource('zillow', {type: 'geojson', data: 'zColony.geojson'});
     map.addLayer({'id': 'zillow', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'zillow', 'paint': {'circle-radius': 5, 'circle-color': 'orange'}});
     
+    // SCHOOLS
 
     map.addSource('schools', {type: 'geojson', data: 'Schools.geojson'});
     map.addLayer({'id': 'schools', 'type': 'circle', 'layout': {'visibility': 'none'}, 'source': 'schools', 'paint': {'circle-radius': 5, 'circle-color': 'green'}});
@@ -232,6 +249,23 @@
       'layout': {'visibility': 'none'}, 
       'paint': {'line-color': '#000', 'line-width': 1}});
 
+    // SHERRIFF 
+
+    map.addSource('sheriff', {type: 'geojson', data: 'sheriff.geojson'});
+    map.addLayer({
+      'id': 'sheriff',
+      'type': 'fill',
+      'source': 'sheriff', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'fill-color': ['match', ['get', 'OBJECTID'], 1, 'green', 2, 'purple', 3, 'yellow', 4, 'red', 5, 'orange', 'blue'], 
+      'fill-opacity': 0.2}});
+    map.addLayer({
+      'id': 'sheriffO', 
+      'type': 'line', 
+      'source': 'sheriff', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': '#000', 'line-width': 1}});
+
     // VOTING
 
     map.addSource('vote24', {type: 'geojson', data: '2024_Voter_Precincts.geojson'});
@@ -247,7 +281,7 @@
       'type': 'line', 
       'source': 'vote24', 
       'layout': {'visibility': 'none'}, 
-      'paint': {'line-color': 'black', 'line-width': 1}});
+      'paint': {'line-color': 'black', 'line-width': 2}});
 
     // FLOOD
 
@@ -338,19 +372,74 @@
       const [selectZillow] = map.queryRenderedFeatures(e.point, {layers: ['zillow']});
       if (selectZillow)
       {
-        a1 = selectZillow.properties['streetAddress'];
-        a2 = selectZillow.properties['state'];
-        a3 = selectZillow.properties['zipcode'];
-        a4 = selectZillow.properties['imgSrc'];
-        a5 = selectZillow.properties['homeType'];
-        a6 = selectZillow.properties['livingArea'];
-        a7 = selectZillow.properties['bedrooms'];
-        a8 = selectZillow.properties['bathrooms'];
-        a9 = selectZillow.properties['lotAreaValue'];
-        a10 = selectZillow.properties['price'];
-        a11 = selectZillow.properties['taxAssessedValue'];
+        s1 = selectZillow.properties['streetAddress'];
+        s2 = selectZillow.properties['state'];
+        s3 = selectZillow.properties['zipcode'];
+        s4 = selectZillow.properties['imgSrc'];
+        s5 = selectZillow.properties['homeType'];
+        s6 = selectZillow.properties['livingArea'];
+        s7 = selectZillow.properties['bedrooms'];
+        s8 = selectZillow.properties['bathrooms'];
+        s9 = selectZillow.properties['lotAreaValue'];
+        s10 = selectZillow.properties['price'];
+        s11 = selectZillow.properties['taxAssessedValue'];
 
-        const descrip = '<strong>FOR SALE<br>' + a1 + ', ' + a2 + ' ' + a3 + '</strong><p><a href="' + a4 + '" target="_blank"><em>Image</em></a><p></p>Type:  ' + a5 + '<br>Living Area: ' + a6 + ' sqft<br>' + a7 + ' Bedrooms / ' + a8 + ' Bathrooms<br>Price: $' + a10 + '<br>Tax Assessed Value: $' + a11 + '</p>'; 
+        const descrip = '<strong>FOR SALE<br>' + s1 + ', ' + s2 + ' ' + s3 + '</strong><p><a href="' + s4 + '" target="_blank"><em>Image</em></a><p></p>Type:  ' + s5 + '<br>Living Area: ' + s6 + ' sqft<br>' + s7 + ' Bedrooms / ' + s8 + ' Bathrooms<br>Price: $' + s10 + '<br>Tax Assessed Value: $' + s11 + '</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // UTILITY PERMITS
+
+      const [selectUtility] = map.queryRenderedFeatures(e.point, {layers: ['utility']});
+      if (selectUtility)
+      {
+        s1 = selectUtility.properties['CompanyNam'];
+        s2 = selectUtility.properties['CompanyAdd'];
+        s3 = selectUtility.properties['CompanyCit'];
+        s4 = selectUtility.properties['CompanySta'];
+        s5 = selectUtility.properties['CompanySZip'];
+        s6 = selectUtility.properties['ContactNam'];
+        s7 = selectUtility.properties['ContactTit'];
+        s8 = selectUtility.properties['ContactPho'];
+        s9 = selectUtility.properties['ContactFax'];
+        s10 = selectUtility.properties['ContactEma'];
+        s11 = selectUtility.properties['Comments'];
+        s12 = selectUtility.properties['RoadName'];
+        s13 = selectUtility.properties['Inspected'];
+        s14 = selectUtility.properties['StartDate'];
+        s15 = selectUtility.properties['EndDate'];
+        s16 = selectUtility.properties['PermitDate'];
+        s17 = selectUtility.properties['LocationDescription'];
+
+        const descrip = '<strong>' + s1 + '</strong><p>Company Address: ' + s2 + ', ' + s3 + ' ' + s4 + '<br>Contact: ' + s6 + '<br>' + s7 + '<br>' + s8 + '<br>' + s9 + '<br>' + s10 + '<br>Comments: ' + s11 + '<br>Road: ' + s12 + '<br>Inspected: ' + s13 + '<br>Start date: ' + s14 + '<br>End date: ' + s15 + '<br>Permit date: ' + s16 + '<br>Location description: ' + s17 + '</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // DEVELOPMENT PERMITS
+
+      const [selectDev] = map.queryRenderedFeatures(e.point, {layers: ['dev1', 'dev2', 'dev3']});
+      if (selectDev)
+      {
+        s1 = selectDev.properties['PermitID'];
+        s2 = selectDev.properties['ApplicantN'];
+        s3 = selectDev.properties['ApplicantC'];
+        s4 = selectDev.properties['ApplicantN'];
+        s5 = selectDev.properties['ApplicantP'];
+        s6 = selectDev.properties['ApplicantF'];
+        s7 = selectDev.properties['ApplicantE'];
+        s8 = selectDev.properties['PermitType'];
+        s9 = selectDev.properties['CulvertPer'];
+        s10 = selectDev.properties['PaymentSta'];
+        s11 = selectDev.properties['FloodPlain'];
+        s12 = selectDev.properties['PropertyOw'];
+        s13 = selectDev.properties['Property_1'];
+        s14 = selectDev.properties['PropertyLe'];
+        s15 = selectDev.properties['PropertySi'];
+        s16 = selectDev.properties['Comments'];
+        s17 = selectDev.properties['FirmPanel'];
+        s18 = selectDev.properties['PermitStat'];
+
+        const descrip = '<strong>Permit ID: ' + s1 + '</strong><p>Applicant name: ' + s2 + '<br>Company: ' + s3 + '<br>Phone: ' + s5 + '<br>Fax: ' + s6 + '<br>Email: ' + s7 + '<br>Type: ' + s8 + '<br>Payment Status: ' + s10 + '<br>Flood Plane: ' + s11 + '<br>Property Owner: ' + s12 + '<br>' + s13 + '<br>' + s14 + '<br>' + s15 + '<br>Comments: ' + s16 + '<br>Firm panel: ' + s17 + '<br>Permit status: ' + s18 + '</p>'; 
         new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
       };
 
@@ -365,6 +454,18 @@
         s4 = selectSchool.properties['ISD'];
         
         const descrip = '<strong>' + s1 + ' ' + s2 + '</strong><p>' + s3 + '<br>' + s4 + ' School District</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // HOUSE REP
+
+      const [selectRep] = map.queryRenderedFeatures(e.point, {layers: ['hor']});
+      if (selectRep)
+      {
+        s1 = selectRep.properties['District'];
+        s2 = selectRep.properties['REPRESENTATIVE'];
+
+        const descrip = '<strong>District: ' + s1 + '</strong><p>Representative:: ' + s2 + '</p>'; 
         new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
       };
 
@@ -390,6 +491,17 @@
         s3 = selectConstable.properties['JUSTICEOFT'];
 
         const descrip = '<strong>Precinct: ' + s1 + '</strong><p>Constable: ' + s2 + '<br>Justice of the Peace: ' + s3 + '</p>'; 
+        new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      // CONSTABLE
+
+      const [selectSheriff] = map.queryRenderedFeatures(e.point, {layers: ['sheriff']});
+      if (selectSheriff)
+      {
+        s1 = selectSheriff.properties['LARRY_DIST'];
+
+        const descrip = '<strong>District: ' + s1 + '</strong>'; 
         new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
       };
 
@@ -444,6 +556,7 @@
       parcels.forEach(parcel => { map.setLayoutProperty(parcel, 'visibility', 'none');});
       map.setLayoutProperty('zillow', 'visibility', 'none')
       map.setLayoutProperty('schools', 'visibility', 'none') 
+      map.setLayoutProperty('hor', 'visibility', 'none') 
       map.setLayoutProperty('isd', 'visibility', 'none') 
       map.setLayoutProperty('isdO', 'visibility', 'none')
       map.setLayoutProperty('pop21', 'visibility', 'none') 
@@ -452,6 +565,15 @@
       map.setLayoutProperty('vote24O', 'visibility', 'none')
       map.setLayoutProperty('constable', 'visibility', 'none')
       map.setLayoutProperty('constableO', 'visibility', 'none')
+      map.setLayoutProperty('hor', 'visibility', 'none') 
+      map.setLayoutProperty('horO', 'visibility', 'none')
+      map.setLayoutProperty('sheriff', 'visibility', 'none')
+      map.setLayoutProperty('sheriffO', 'visibility', 'none')
+      map.setLayoutProperty('utility', 'visibility', 'none')
+      map.setLayoutProperty('dev1', 'visibility', 'none')
+      map.setLayoutProperty('dev2', 'visibility', 'none')
+      map.setLayoutProperty('dev3', 'visibility', 'none')
+      
       switch(selectedOption) 
       {
         case 'option1':
@@ -466,22 +588,32 @@
           map.setLayoutProperty('isdO', 'visibility', 'visible')
           break;
         case 'option4':
+          map.setLayoutProperty('hor', 'visibility', 'visible') 
+          map.setLayoutProperty('horO', 'visibility', 'visible')
+          break;
+        case 'option5':
           map.setLayoutProperty('pop21', 'visibility', 'visible') 
           map.setLayoutProperty('pop21O', 'visibility', 'visible')
           break;
-        case 'option5':
+        case 'option6':
           map.setLayoutProperty('vote24', 'visibility', 'visible')
           map.setLayoutProperty('vote24O', 'visibility', 'visible')
           break;
-        case 'option6':
+        case 'option7':
           map.setLayoutProperty('constable', 'visibility', 'visible')
           map.setLayoutProperty('constableO', 'visibility', 'visible')
           break;
-        case 'option7':
-          console.log("It's an apple.");
-          break;
         case 'option8':
-          console.log("It's a banana.");
+          map.setLayoutProperty('sheriff', 'visibility', 'visible')
+          map.setLayoutProperty('sheriffO', 'visibility', 'visible')
+          break;
+        case 'option9':
+          map.setLayoutProperty('dev1', 'visibility', 'visible')
+          map.setLayoutProperty('dev2', 'visibility', 'visible')
+          map.setLayoutProperty('dev3', 'visibility', 'visible')
+          break;
+        case 'option10':
+          map.setLayoutProperty('utility', 'visibility', 'visible')
           break;
         default:
           console.log("Unknown option.");
