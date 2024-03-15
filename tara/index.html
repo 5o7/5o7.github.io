@@ -2,9 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  
   <title>Tara</title>
- 
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
@@ -16,27 +14,12 @@
     .dropdown { background-color: 'white'; color: black; border: none; padding: 10px 20px; cursor: pointer; }
     .dropdown:hover { background-color: 'white'; }
   </style>
-
-  <style type="text/css">
-    #info
-    {
-      display: table;
-      position: relative;
-      margin: 0px auto;
-      word-wrap: anywhere;
-      white-space: pre-wrap;
-      padding: 10px;
-      border: none;
-      border-radius: .1px;
-      font-size: .01px;
-      text-align: left;
-      color: #222;
-      background: #eff5d5;
-    }
-  </style>
 </head>
 
 <body>
+
+<script src="https://cdn.jsdelivr.net/gh/jscastro76/threebox@v.2.2.2/dist/threebox.min.js" type="text/javascript"></script>
+<link href="https://cdn.jsdelivr.net/gh/jscastro76/threebox@v.2.2.2/dist/threebox.css" rel="stylesheet">
 
 <div id='container'>
   <div id='sidebar'>
@@ -44,10 +27,10 @@
   </div>
   <div id="dropdown-container">
   <select id="myDropdown" class="dropdown">
-    <option value="option1">Denton Property Data</option>
+    <option value="option1">Denton County Property Data</option>
     <option value="option2">For Sale on Zillow</option>
     <option value="option3">Schools and Districts</option>
-    <option value="option4">House Representatives</option>
+    <option value="option4">Texas House Representatives</option>
     <option value="option5">City Populations</option>
     <option value="option6">Voter Precincts</option>
     <option value="option7">Constables</option>
@@ -56,7 +39,7 @@
     <option value="option10">Utility Permits</option>
   </select>
 </div>
-  <div id='map'></div>
+<div id='map'></div>
 </div>
 
 <style>
@@ -108,9 +91,42 @@
     // console.log(gecoderResponse);
   })
 
+  // eslint-disable-next-line no-undef
+
+
+
   // ADD LAYERS
 
   map.on('load', () => {
+    console.log(map.imports)
+    // GLTF
+
+    // const tb = (window.tb = new Threebox( map, map.getCanvas().getContext('webgl'), {defaultLights: true}));
+    // map.addLayer({
+    //   id: 'custom-threebox-model',
+    //   type: 'custom',
+    //   renderingMode: '3d',
+    //   onAdd: function () {
+    //     const options = {
+    //       obj: 'b001.gltf',
+    //       type: 'gltf',
+    //       scale: { x: 3.2, y: 3.2, z: 2.7 },
+    //       units: 'meters',
+    //       rotation: { x: 90, y: -90, z: 0 }
+    //     };
+
+    //     tb.loadObj(options, (model) => {
+    //       model.setCoords([-97.13325, 33.214914]);
+    //       model.setRotation({ x: 0, y: 0, z: 0 });
+    //       tb.add(model);
+    //     });
+    //   },
+
+    //   render: function () 
+    //   {
+    //     tb.update();
+    //   }
+    // });
 
     // COUNTY LINE
 
@@ -122,11 +138,15 @@
       layout: {}, 
       paint: {'line-color': 'black',  'line-width': 2}});
 
+
+    // BETTER PARCELS
+
+    
+
     // PARCELS
 
     const o1 = .1
     const o2 = .05
-
     const parcels = ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34']
 
     const parcelLayers = 
@@ -330,39 +350,41 @@
 
     map.on('click', (e) => {
 
+
       // PARCEL
 
       const [selectParcel] = map.queryRenderedFeatures(e.point, {layers: parcels});
 
         if (selectParcel)
         {
-          b1 = selectParcel.properties['addr_line2'];
-          b2 = selectParcel.properties['addr_city'];
-          b3 = selectParcel.properties['addr_state'];
-          b4 = selectParcel.properties['addr_zip'];
-          b5 = selectParcel.properties['owner_name'];
-          b6 = selectParcel.properties['legal_desc'];
-          b7 = selectParcel.properties['yr_blt'];
-          b8 = selectParcel.properties['legal_acreage'];
-          b9 = selectParcel.properties['land_sqft'];
-          b10 = selectParcel.properties['living_area'];
-          b11 = selectParcel.properties['school'];
-          if (b11 == 'S01') {b11 = 'Argyle ISD'}
-          if (b11 == 'S02') {b11 = 'Aubrey ISD'}
-          if (b11 == 'S05') {b11 = 'Denton ISD'}
-          if (b11 == 'S07') {b11 = 'Krum ISD'}
-          if (b11 == 'S08') {b11 = 'Lake Dallas ISD'}
-          if (b11 == 'S09') {b11 = 'Lewisville ISD'}
-          if (b11 == 'S10') {b11 = 'Little Elm ISD'}
-          if (b11 == 'S11') {b11 = 'Northwest ISD'}
-          if (b11 == 'S12') {b11 = 'Pilot Point ISD'}
-          if (b11 == 'S13') {b11 = 'Ponder ISD'}
-          if (b11 == 'S14') {b11 = 'Sanger ISD'}
-          b12 = selectParcel.properties['cert_appr_val'];
-          b13 = selectParcel.properties['cert_asses_val'];
-          b14 = selectParcel.properties['main_imprv'];
+          var s1 = selectParcel.properties['addr_line2'];
+          var s2 = selectParcel.properties['addr_city'];
+          var s3 = selectParcel.properties['addr_state'];
+          var s4 = selectParcel.properties['addr_zip'];
+          if (selectParcel.properties['owner_name'])
+          var s5 = selectParcel.properties['owner_name'];
+          var s6 = selectParcel.properties['legal_desc'];
+          var s7 = selectParcel.properties['yr_blt'];
+          var s8 = selectParcel.properties['legal_acreage'];
+          var s9 = selectParcel.properties['land_sqft'];
+          var s10 = selectParcel.properties['living_area'];
+          var s11 = selectParcel.properties['school'];
+          if (s11 == 'S01') {s11 = 'Argyle ISD'}
+          if (s11 == 'S02') {s11 = 'Aubrey ISD'}
+          if (s11 == 'S05') {s11 = 'Denton ISD'}
+          if (s11 == 'S07') {s11 = 'Krum ISD'}
+          if (s11 == 'S08') {s11 = 'Lake Dallas ISD'}
+          if (s11 == 'S09') {s11 = 'Lewisville ISD'}
+          if (s11 == 'S10') {s11 = 'Little Elm ISD'}
+          if (s11 == 'S11') {s11 = 'Northwest ISD'}
+          if (s11 == 'S12') {s11 = 'Pilot Point ISD'}
+          if (s11 == 'S13') {s11 = 'Ponder ISD'}
+          if (s11 == 'S14') {s11 = 'Sanger ISD'}
+          var s12 = selectParcel.properties['cert_appr_val'];
+          var s13 = selectParcel.properties['cert_asses_val'];
+          var s14 = selectParcel.properties['main_imprv'];
 
-          const descrip = '<strong>' + b1 + '<br>' + b2 + ', ' + b3 + ' ' + b4 +'</strong><p>Owner:  ' + b5 + '<br>Legal Descrip: ' + b6+ '<br>Year Built: ' + b7 + '<br>Acreage: ' + b8 + '<br>Parcel Size: ' + b9 + '<br>Building Size: ' + b10 + '<br>School Dist: ' + b11 + '<br>Appraised: $' + b12 + '<br>Assessed: $' + b13 + '<br>Type: ' + b14 + '</p>'; 
+          const descrip = '<strong>' + s1 + '<br>' + s2 + ', ' + s3 + ' ' + s4 +'</strong><p>Owner:  ' + s5 + '<br>Legal Descrip: ' + s6+ '<br>Year Built: ' + s7 + '<br>Acreage: ' + s8 + '<br>Parcel Size: ' + s9 + '<br>Building Size: ' + s10 + '<br>School Dist: ' + s11 + '<br>Appraised: $' + s12 + '<br>Assessed: $' + s13 + '<br>Type: ' + s14 + '</p>'; 
           
           new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
       }
