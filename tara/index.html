@@ -93,11 +93,17 @@
 
   // eslint-disable-next-line no-undef
 
-
-
   // ADD LAYERS
 
   map.on('load', () => {
+    features = map.queryRenderedFeatures(
+      { layers: ["building-models"], filter: ['==', 'extrude', 'true']}); // This is where I get building information
+
+    features.forEach(function(feature){ 
+      console.log(feature.geometry);  // feature.geometry getter returns building shape points (basement)
+      console.log(feature.properties.height); // this is the building height
+      console.log(feature.properties.min_height); // this is the building part elevation from ground (e.g. a bridge)
+    });
     console.log(map.imports)
     // GLTF
 
@@ -147,11 +153,10 @@
 
     const o1 = .1
     const o2 = .05
-    const parcels = ['p01', 'p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34']
+    const parcels = ['p02', 'p03', 'p04', 'p05', 'p06', 'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14', 'p15', 'p16', 'p17', 'p18', 'p19', 'p20', 'p21', 'p22', 'p23', 'p24', 'p25', 'p26', 'p27', 'p28', 'p29', 'p30', 'p31', 'p32', 'p33', 'p34']
 
     const parcelLayers = 
     [
-      { id: 'p01', geojson: 'p01.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
       { id: 'p02', geojson: 'p02.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
       { id: 'p03', geojson: 'p03.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
       { id: 'p04', geojson: 'p04.geojson', promoteId: 'OBJECTID', opacity: [o1, o2] },
@@ -196,6 +201,57 @@
           'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], layer.opacity[0], layer.opacity[1]]}
         });
     });
+
+    // PARCEL TOUCH TEST
+
+    map.addSource('pA01', {type: 'geojson', data: 'pA01.geojson'});
+    map.addLayer({
+      'id': 'pA01',
+      'type': 'fill',
+      'source': 'pA01', 
+      // 'layout': {'visibility': 'show'}, 
+      'paint': {'fill-color': 'pink', 
+      'fill-opacity': 1}});
+    map.addLayer({
+      'id': 'pA01o', 
+      'type': 'line', 
+      'source': 'pA01', 
+      // 'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': '#000', 'line-width': 1}});
+
+    // PARCEL TOUCH TEST
+
+    map.addSource('pA02', {type: 'geojson', data: 'pA02.geojson'});
+    map.addLayer({
+      'id': 'pA02',
+      'type': 'fill',
+      'source': 'pA02', 
+      // 'layout': {'visibility': 'show'}, 
+      'paint': {'fill-color': 'pink', 
+      'fill-opacity': 1}});
+    map.addLayer({
+      'id': 'pA02o', 
+      'type': 'line', 
+      'source': 'pA02', 
+      // 'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': '#000', 'line-width': 1}});
+
+    // PARCEL TOUCH TEST
+
+    map.addSource('pA03', {type: 'geojson', data: 'pA03.geojson'});
+    map.addLayer({
+      'id': 'pA03',
+      'type': 'fill',
+      'source': 'pA03', 
+      // 'layout': {'visibility': 'show'}, 
+      'paint': {'fill-color': 'pink', 
+      'fill-opacity': 1}});
+    map.addLayer({
+      'id': 'pA03o', 
+      'type': 'line', 
+      'source': 'pA03', 
+      // 'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': '#000', 'line-width': 1}});
 
     // UTILITY PERMITS
 
@@ -303,6 +359,23 @@
       'layout': {'visibility': 'none'}, 
       'paint': {'line-color': 'black', 'line-width': 2}});
 
+    // STREETS
+
+    map.addSource('streets', {type: 'geojson', data: '2024_Voter_Precincts.geojson'});
+    map.addLayer({
+      'id': 'vote24',
+      'type': 'fill',
+      'source': 'vote24', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'fill-color': 'black', 
+      'fill-opacity': 0.3}});
+    map.addLayer({
+      'id': 'vote24O', 
+      'type': 'line', 
+      'source': 'vote24', 
+      'layout': {'visibility': 'none'}, 
+      'paint': {'line-color': 'black', 'line-width': 2}});
+
     // FLOOD
 
     map.addSource('flood', {type: 'geojson', data: 'Base_Flood_Elevation_New_2019.geojson'});
@@ -350,6 +423,43 @@
 
     map.on('click', (e) => {
 
+
+      // PARCEL TOUCH TEST
+
+      const [select_pA01] = map.queryRenderedFeatures(e.point, {layers: ['pA01']});
+      if (select_pA01)
+      {
+        var s1 = select_pA01.properties['addr_line2'];
+        var s2 = select_pA01.properties['addr_city'];
+        var s3 = select_pA01.properties['addr_state'];
+        var s4 = select_pA01.properties['addr_zip'];
+        if (select_pA01.properties['owner_name'])
+        var s5 = select_pA01.properties['owner_name'];
+        var s6 = select_pA01.properties['legal_desc'];
+        var s7 = select_pA01.properties['yr_blt'];
+        var s8 = select_pA01.properties['legal_acreage'];
+        var s9 = select_pA01.properties['land_sqft'];
+        var s10 = select_pA01.properties['living_area'];
+        var s11 = select_pA01.properties['school'];
+        if (s11 == 'S01') {s11 = 'Argyle ISD'}
+        if (s11 == 'S02') {s11 = 'Aubrey ISD'}
+        if (s11 == 'S05') {s11 = 'Denton ISD'}
+        if (s11 == 'S07') {s11 = 'Krum ISD'}
+        if (s11 == 'S08') {s11 = 'Lake Dallas ISD'}
+        if (s11 == 'S09') {s11 = 'Lewisville ISD'}
+        if (s11 == 'S10') {s11 = 'Little Elm ISD'}
+        if (s11 == 'S11') {s11 = 'Northwest ISD'}
+        if (s11 == 'S12') {s11 = 'Pilot Point ISD'}
+        if (s11 == 'S13') {s11 = 'Ponder ISD'}
+        if (s11 == 'S14') {s11 = 'Sanger ISD'}
+        var s12 = select_pA01.properties['cert_appr_val'];
+        var s13 = select_pA01.properties['cert_asses_val'];
+        var s14 = select_pA01.properties['main_imprv'];
+
+        const descrip = 'Mailing Address:<br><strong>' + s1 + '<br>' + s2 + ', ' + s3 + ' ' + s4 +'</strong><p>Owner:  ' + s5 + '<br>Legal Descrip: ' + s6+ '<br>Year Built: ' + s7 + '<br>Acreage: ' + s8 + '<br>Parcel Size: ' + s9 + '<br>Building Size: ' + s10 + '<br>School Dist: ' + s11 + '<br>Appraised: $' + s12 + '<br>Assessed: $' + s13 + '<br>Type: ' + s14 + '</p>'; 
+          
+          new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
 
       // PARCEL
 
