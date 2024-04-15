@@ -461,6 +461,76 @@
           new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
       };
 
+      const [select_pA02] = map.queryRenderedFeatures(e.point, {layers: ['pA02']});
+      if (select_pA02)
+      {
+        var s1 = select_pA02.properties['addr_line2'];
+        var s2 = select_pA02.properties['addr_city'];
+        var s3 = select_pA02.properties['addr_state'];
+        var s4 = select_pA02.properties['addr_zip'];
+        if (select_pA02.properties['owner_name'])
+        var s5 = select_pA02.properties['owner_name'];
+        var s6 = select_pA02.properties['legal_desc'];
+        var s7 = select_pA02.properties['yr_blt'];
+        var s8 = select_pA02.properties['legal_acreage'];
+        var s9 = select_pA02.properties['land_sqft'];
+        var s10 = select_pA02.properties['living_area'];
+        var s11 = select_pA02.properties['school'];
+        if (s11 == 'S01') {s11 = 'Argyle ISD'}
+        if (s11 == 'S02') {s11 = 'Aubrey ISD'}
+        if (s11 == 'S05') {s11 = 'Denton ISD'}
+        if (s11 == 'S07') {s11 = 'Krum ISD'}
+        if (s11 == 'S08') {s11 = 'Lake Dallas ISD'}
+        if (s11 == 'S09') {s11 = 'Lewisville ISD'}
+        if (s11 == 'S10') {s11 = 'Little Elm ISD'}
+        if (s11 == 'S11') {s11 = 'Northwest ISD'}
+        if (s11 == 'S12') {s11 = 'Pilot Point ISD'}
+        if (s11 == 'S13') {s11 = 'Ponder ISD'}
+        if (s11 == 'S14') {s11 = 'Sanger ISD'}
+        var s12 = select_pA02.properties['cert_appr_val'];
+        var s13 = select_pA02.properties['cert_asses_val'];
+        var s14 = select_pA02.properties['main_imprv'];
+
+        const descrip = 'Mailing Address:<br><strong>' + s1 + '<br>' + s2 + ', ' + s3 + ' ' + s4 +'</strong><p>Owner:  ' + s5 + '<br>Legal Descrip: ' + s6+ '<br>Year Built: ' + s7 + '<br>Acreage: ' + s8 + '<br>Parcel Size: ' + s9 + '<br>Building Size: ' + s10 + '<br>School Dist: ' + s11 + '<br>Appraised: $' + s12 + '<br>Assessed: $' + s13 + '<br>Type: ' + s14 + '</p>'; 
+          
+          new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
+      const [select_pA03] = map.queryRenderedFeatures(e.point, {layers: ['pA03']});
+      if (select_pA03)
+      {
+        var s1 = select_pA03.properties['addr_line2'];
+        var s2 = select_pA03.properties['addr_city'];
+        var s3 = select_pA03.properties['addr_state'];
+        var s4 = select_pA03.properties['addr_zip'];
+        if (select_pA03.properties['owner_name'])
+        var s5 = select_pA03.properties['owner_name'];
+        var s6 = select_pA03.properties['legal_desc'];
+        var s7 = select_pA03.properties['yr_blt'];
+        var s8 = select_pA03.properties['legal_acreage'];
+        var s9 = select_pA03.properties['land_sqft'];
+        var s10 = select_pA03.properties['living_area'];
+        var s11 = select_pA03.properties['school'];
+        if (s11 == 'S01') {s11 = 'Argyle ISD'}
+        if (s11 == 'S02') {s11 = 'Aubrey ISD'}
+        if (s11 == 'S05') {s11 = 'Denton ISD'}
+        if (s11 == 'S07') {s11 = 'Krum ISD'}
+        if (s11 == 'S08') {s11 = 'Lake Dallas ISD'}
+        if (s11 == 'S09') {s11 = 'Lewisville ISD'}
+        if (s11 == 'S10') {s11 = 'Little Elm ISD'}
+        if (s11 == 'S11') {s11 = 'Northwest ISD'}
+        if (s11 == 'S12') {s11 = 'Pilot Point ISD'}
+        if (s11 == 'S13') {s11 = 'Ponder ISD'}
+        if (s11 == 'S14') {s11 = 'Sanger ISD'}
+        var s12 = select_pA03.properties['cert_appr_val'];
+        var s13 = select_pA03.properties['cert_asses_val'];
+        var s14 = select_pA03.properties['main_imprv'];
+
+        const descrip = 'Mailing Address:<br><strong>' + s1 + '<br>' + s2 + ', ' + s3 + ' ' + s4 +'</strong><p>Owner:  ' + s5 + '<br>Legal Descrip: ' + s6+ '<br>Year Built: ' + s7 + '<br>Acreage: ' + s8 + '<br>Parcel Size: ' + s9 + '<br>Building Size: ' + s10 + '<br>School Dist: ' + s11 + '<br>Appraised: $' + s12 + '<br>Assessed: $' + s13 + '<br>Type: ' + s14 + '</p>'; 
+          
+          new mapboxgl.Popup().setLngLat([e.lngLat['lng'],e.lngLat['lat']]).setHTML(descrip).addTo(map);
+      };
+
       // PARCEL
 
       const [selectParcel] = map.queryRenderedFeatures(e.point, {layers: parcels});
