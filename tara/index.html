@@ -116,13 +116,13 @@
         const options = {
           obj: 'DentonCountyCourthouseOnTheSquare.gltf',
           type: 'gltf',
-          scale: {x: 1, y: 1, z: 1},
+          scale: {x: 1.4, y: 1.4, z: 1.4},
           units: 'meters',
           rotation: {x: 90, y: -90, z: 0}
         };
 
         tb.loadObj(options, (model) => {
-          model.setCoords([-97.133242,33.214908]); // L and R less moves left, Up and Down less moves down
+          model.setCoords([-97.133300,33.214908]); // L and R less moves left, Up and Down less moves down
           model.setRotation({ x: 0, y: 0, z: 0 });
           tb.add(model);
         });
