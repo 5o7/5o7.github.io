@@ -340,67 +340,65 @@ function animate()
 	renderer.render(scene, camera)
 	raycaster.setFromCamera(mouse, camera)
 	const intersects = raycaster.intersectObject(bgMesh)
-	if (intersects.length > 0)
-	{
-		console.log(intersects[0].face)
+	// if (intersects.length > 0)
+	// {
+	// 	console.log(intersects[0].face)
 
-		const {color} = intersects[0].object.geometry.attributes
+	// 	const {color} = intersects[0].object.geometry.attributes
 
-		// vert 1
+	// 	// vert 1
 
-		color.setX(intersects[0].face.a, .1)
-		color.setY(intersects[0].face.a, .5)
-		color.setZ(intersects[0].face.a, 1)
+	// 	color.setX(intersects[0].face.a, .1)
+	// 	color.setY(intersects[0].face.a, .5)
+	// 	color.setZ(intersects[0].face.a, 1)
 
-		// vert 2
+	// 	// vert 2
 
-		color.setX(intersects[0].face.b, .1)
-		color.setY(intersects[0].face.b, .5)
-		color.setZ(intersects[0].face.b, 1)
+	// 	color.setX(intersects[0].face.b, .1)
+	// 	color.setY(intersects[0].face.b, .5)
+	// 	color.setZ(intersects[0].face.b, 1)
 
-		// vert 3
+	// 	// vert 3
 
-		color.setX(intersects[0].face.c, .1)
-		color.setY(intersects[0].face.c, .5)
-		color.setZ(intersects[0].face.c, 1)
+	// 	color.setX(intersects[0].face.c, .1)
+	// 	color.setY(intersects[0].face.c, .5)
+	// 	color.setZ(intersects[0].face.c, 1)
 
-		color.needsUpdate = true
+	// 	color.needsUpdate = true
 
-		const initialColor = {r: .1, g: .1, b: .1}
-		const hoverColor = {r: .2, g: .2, b: .2}
+	// 	const initialColor = {r: .1, g: .1, b: .1}
+	// 	const hoverColor = {r: .2, g: .2, b: .2}
 
-		gsap.to(hoverColor, {
-			r: initialColor.r, 
-			g: initialColor.g, 
-			b: initialColor.b,
-			onUpdate: () => {
-				// vert 1
+	// 	gsap.to(hoverColor, {
+	// 		r: initialColor.r, 
+	// 		g: initialColor.g, 
+	// 		b: initialColor.b,
+	// 		onUpdate: () => {
+	// 			// vert 1
 
-				color.setX(intersects[0].face.a, hoverColor.r)
-				color.setY(intersects[0].face.a, hoverColor.g)
-				color.setZ(intersects[0].face.a, hoverColor.b)
+	// 			color.setX(intersects[0].face.a, hoverColor.r)
+	// 			color.setY(intersects[0].face.a, hoverColor.g)
+	// 			color.setZ(intersects[0].face.a, hoverColor.b)
 
-				// vert 2
+	// 			// vert 2
 
-				color.setX(intersects[0].face.b, hoverColor.r)
-				color.setY(intersects[0].face.b, hoverColor.g)
-				color.setZ(intersects[0].face.b, hoverColor.b)
+	// 			color.setX(intersects[0].face.b, hoverColor.r)
+	// 			color.setY(intersects[0].face.b, hoverColor.g)
+	// 			color.setZ(intersects[0].face.b, hoverColor.b)
 
-				// vert 3
+	// 			// vert 3
 
-				color.setX(intersects[0].face.c, hoverColor.r)
-				color.setY(intersects[0].face.c, hoverColor.g)
-				color.setZ(intersects[0].face.c, hoverColor.b)
-				color.needsUpdate = true
-			}
-		})
-	}
+	// 			color.setX(intersects[0].face.c, hoverColor.r)
+	// 			color.setY(intersects[0].face.c, hoverColor.g)
+	// 			color.setZ(intersects[0].face.c, hoverColor.b)
+	// 			color.needsUpdate = true
+	// 		}
+	// 	})
+	// }
 	// console.log(intersects)
 }
 
 animate()
-
-
 
 addEventListener('mousemove', (event) =>
 {
