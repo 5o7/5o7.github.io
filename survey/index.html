@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Survey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <style>
+      body {
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+/*      .absolute {position: absolute;}
+      .text-white {color: white;}*/
+
+      .font-exo {font-family: 'Exo 2', sans-serif;}
+
+      .font-space-mono {font-family: 'Space Mono', monospace;}
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div class="absolute text-green-500 text-left width-8"
+    style="top: 15%;
+    transform: translate(-50%, -25%); left: 50%;">
+      
+      <h1 class="font-space-mono text-3xl uppercase" id="sectionText">mapping</h1>
+      
+      <p class="font-space-mono font-exo text-xl uppercase tracking-wide mt-5" id="questionText">(1 of 5) Are people, process, and technology context established and understood?</p>
+
+      <p> </p>
+
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm 
+      font-space-mono uppercase mt-5  ml-4 hover:bg-white hover:text-gray-800" 
+      id="optionOneButton">I have no idea what you're talking about.</button>
+
+      <p> </p>
+
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
+      hover:bg-white hover:text-gray-800" id="optionTwoButton">That's outsourced. Once a month, we have training sessions via zoom.</button>
+      <p> </p>
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
+      hover:bg-white hover:text-gray-800" id="optionThreeButton">An intranet site where all employees can access Gen AI policies. Also new hire, Harold, computer tech and conducts classes once a month.</button>
+      <p> </p>
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
+      hover:bg-white hover:text-gray-800" id="optionFourButton">We incorporate training sessions, interactive demonstrations, and collaborativve workshops.</button>
+      <p> </p>
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
+      hover:bg-white hover:text-gray-800" id="optionFiveButton">We incorporate training sessions, interactive demonstrations, pilot projects, collaborativve workshops, employee feedback sessions, implement incentives and recognition.</button>
+
+      <script>
+        function changeText() {
+          var s = document.getElementById("sectionText");
+          var q = document.getElementById("questionText");
+          var op1 = document.getElementById("optionOneButton");
+          var op2 = document.getElementById("optionTwoButton");
+          var op3 = document.getElementById("optionThreeButton");
+          var op4 = document.getElementById("optionFourButton");
+          var op5 = document.getElementById("optionFiveButton");
+
+          if (q.textContent == "(1 of 5) Are people, process, and technology context established and understood?")
+          {
+            q.textContent = "(2 of 5) Is the AI system categorized?";
+            op1.textContent = "categorized low";
+            op2.textContent = "categorized mid low";
+            op3.textContent = "categorized mid";
+            op4.textContent = "categorized mid high";
+            op5.textContent = "categorized high";
+          }
+          else if (q.textContent == "(2 of 5) Is the AI system categorized?")
+          {
+            q.textContent = "(3 of 5) Are AI capabilities, targeted usage, goals, and expected benefits and costs compared with appropriate benchmarks understood?";
+            op1.textContent = "understood low";
+            op2.textContent = "understood mid low";
+            op3.textContent = "understood mid";
+            op4.textContent = "understood mid high";
+            op5.textContent = "understood high";
+          }
+          else if (q.textContent == "(3 of 5) Are AI capabilities, targeted usage, goals, and expected benefits and costs compared with appropriate benchmarks understood?")
+          {
+            q.textContent = "(4 of 5) Are risks and benefits mapped for all components of the AI system including third-party software and data?";
+            op1.textContent = "risks/befits low";
+            op2.textContent = "risks/befits mid low";
+            op3.textContent = "risks/befits mid";
+            op4.textContent = "risks/befits mid high";
+            op5.textContent = "risks/befits high";
+          }
+          else if (q.textContent == "(4 of 5) Are risks and benefits mapped for all components of the AI system including third-party software and data?")
+          {
+            q.textContent = "(5 of 5) Are impacts to individuals, groups, communities, organizations, and sociey characterized?";
+            op1.textContent = "impacts low";
+            op2.textContent = "impacts mid low";
+            op3.textContent = "impacts mid";
+            op4.textContent = "impacts mid high";
+            op5.textContent = "impacts high";
+          }
+          else if (q.textContent == "(5 of 5) Are impacts to individuals, groups, communities, organizations, and sociey characterized?")
+          {
+
+            s.classList.toggle('text-red-500');
+            q.classList.toggle('text-red-500');
+            op1.classList.toggle('text-red-500');
+            op2.classList.toggle('text-red-500');
+            op3.classList.toggle('text-red-500');
+            op4.classList.toggle('text-red-500');
+            op5.classList.toggle('text-red-500');
+            s.textContent = "measuring"
+            q.textContent = "(1 of 4) Are appropriate methods and metrics identified and applied?";
+            op1.textContent = "identify/applied low";
+            op2.textContent = "identify/applied mid low";
+            op3.textContent = "identify/applied mid";
+            op4.textContent = "identify/applied mid high";
+            op5.textContent = "identify/applied high";
+          }
+          else if (q.textContent == "(1 of 4) Are appropriate methods and metrics identified and applied?")
+          {
+            q.textContent = "(2 of 4) Are AI systems evaluated for trustworthy characteristics?";
+            op1.textContent = "trustTest low";
+            op2.textContent = "trustTest mid low";
+            op3.textContent = "trustTest mid";
+            op4.textContent = "trustTest mid high";
+            op5.textContent = "trustTest high";
+          }
+          else if (q.textContent == "(2 of 4) Are AI systems evaluated for trustworthy characteristics?")
+          {
+            q.textContent = "(3 of 4) Are mechanisms for tracking AI risks identified in time in place?";
+            op1.textContent = "trackingIssues low";
+            op2.textContent = "trackingIssues mid low";
+            op3.textContent = "trackingIssues mid";
+            op4.textContent = "trackingIssues mid high";
+            op5.textContent = "trackingIssues high";
+          }
+          else if (q.textContent == "(3 of 4) Are mechanisms for tracking AI risks identified in time in place?")
+          {
+            q.textContent = "(4 of 4) Is feedback about efficacy of measurement gathered and assessed?";
+            op1.textContent = "feedback low";
+            op2.textContent = "feedback mid low";
+            op3.textContent = "feedback mid";
+            op4.textContent = "feedback mid high";
+            op5.textContent = "feedback high";
+          }
+          else if (q.textContent == "(4 of 4) Is feedback about efficacy of measurement gathered and assessed?")
+          {
+            s.classList.toggle('text-blue-500');
+            q.classList.toggle('text-blue-500');
+            op1.classList.toggle('text-blue-500');
+            op2.classList.toggle('text-blue-500');
+            op3.classList.toggle('text-blue-500');
+            op4.classList.toggle('text-blue-500');
+            op5.classList.toggle('text-blue-500');
+            s.textContent = "managing"
+            q.textContent = "(1 of 6) Are policies, processes, procedures, and practices across the organization related to the mapping, measuring, and managing of AI risks in place, transparent, and implemented effectively?";
+            op1.textContent = "ppp low";
+            op2.textContent = "ppp mid low";
+            op3.textContent = "ppp mid";
+            op4.textContent = "ppp mid high";
+            op5.textContent = "ppp high";
+          }
+          else if (q.textContent == "(1 of 6) Are policies, processes, procedures, and practices across the organization related to the mapping, measuring, and managing of AI risks in place, transparent, and implemented effectively?")
+          {
+            q.textContent = "(2 of 6) Are accountability structures in place?";
+            op1.textContent = "accountability low";
+            op2.textContent = "accountability mid low";
+            op3.textContent = "accountability mid";
+            op4.textContent = "accountability mid high";
+            op5.textContent = "accountability high";
+          }
+          else if (q.textContent == "(2 of 6) Are accountability structures in place?")
+          {
+            q.textContent = "(3 of 6) Are workforce diversity, equity, inclusion, and accessibility processes prioritized in the mapping, measuring, and managing of AI risk throughout the life cycle?";
+            op1.textContent = "Workforce diversity low";
+            op2.textContent = "Workforce diversity mid low";
+            op3.textContent = "Workforce diversity mid";
+            op4.textContent = "Workforce diversity mid high";
+            op5.textContent = "Workforce diversity high";
+          }
+          else if (q.textContent == "(3 of 6) Are workforce diversity, equity, inclusion, and accessibility processes prioritized in the mapping, measuring, and managing of AI risk throughout the life cycle?")
+          {
+            q.textContent = "(4 of 6) Are organizational teams committed to a culture that considers and communicates AI risks?";
+            op1.textContent = "considering/communicating risk low";
+            op2.textContent = "considering/communicating mid low";
+            op3.textContent = "considering/communicating mid";
+            op4.textContent = "considering/communicating mid high";
+            op5.textContent = "considering/communicating high";
+          }
+          else if (q.textContent == "(4 of 6) Are organizational teams committed to a culture that considers and communicates AI risks?")
+          {
+            q.textContent = "(5 of 6) Are processes in place for robust engagement with relevent AI actors?";
+            op1.textContent = "staff engagement risk low";
+            op2.textContent = "staff engagement mid low";
+            op3.textContent = "staff engagement mid";
+            op4.textContent = "staff engagement mid high";
+            op5.textContent = "staff engagement high";
+          }
+          else if (q.textContent == "(5 of 6) Are processes in place for robust engagement with relevent AI actors?")
+          {
+            q.textContent = "(6 of 6) Are policies and procedures in place to address AI risks and benefits arising from third-party software and data and other supply chain issues?";
+            op1.textContent = "third-party problems risk low";
+            op2.textContent = "third-party problems mid low";
+            op3.textContent = "third-party problems mid";
+            op4.textContent = "third-party problems mid high";
+            op5.textContent = "third-party problems high";
+          }
+          else if (q.textContent == "(6 of 6) Are policies and procedures in place to address AI risks and benefits arising from third-party software and data and other supply chain issues?")
+          {
+            s.textContent = "";
+            q.textContent = "";
+            op1.style.display = 'none';
+            op2.style.display = 'none';
+            op3.style.display = 'none';
+            op4.style.display = 'none';
+            op5.style.display = 'none';
+          }
+        }
+      </script>
+
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
