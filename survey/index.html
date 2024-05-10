@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Survey</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,33 +23,24 @@
   </head>
   <body>
     <div id="app"></div>
-    <div class="absolute text-green-500 text-left"
-    style="top: 15%;
+    <div class="absolute text-green-500"
+    style="top: 25%;
     transform: translate(-50%, -25%); left: 50%;">
       
       <h1 class="font-space-mono text-3xl uppercase" id="sectionText">mapping</h1>
-      
       <p class="font-space-mono font-exo text-xl uppercase tracking-wide mt-5" id="questionText">(1 of 5) Are people, process, and technology context established and understood?</p>
-
       <p> </p>
-
       <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm 
-      font-space-mono uppercase mt-5  ml-4 hover:bg-white hover:text-gray-800" 
+      font-space-mono uppercase mt-5  ml-4 hover:text-white" 
       id="optionOneButton">I have no idea what you're talking about.</button>
-
       <p> </p>
-
-      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
-      hover:bg-white hover:text-gray-800" id="optionTwoButton">That's outsourced. Once a month, we have training sessions via zoom.</button>
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4 hover:text-white" id="optionTwoButton">That's outsourced. Once a month, we have training sessions via zoom.</button>
       <p> </p>
-      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
-      hover:bg-white hover:text-gray-800" id="optionThreeButton">An intranet site where all employees can access Gen AI policies. Also new hire, Harold, computer tech and conducts classes once a month.</button>
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4 hover:text-white" id="optionThreeButton">An intranet site where all employees can access Gen AI policies. Also new hire, Harold, computer tech and conducts classes once a month.</button>
       <p> </p>
-      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
-      hover:bg-white hover:text-gray-800" id="optionFourButton">We incorporate training sessions, interactive demonstrations, and collaborativve workshops.</button>
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4 hover:text-white" id="optionFourButton">We incorporate training sessions, interactive demonstrations, and collaborativve workshops.</button>
       <p> </p>
-      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4  
-      hover:bg-white hover:text-gray-800" id="optionFiveButton">We incorporate training sessions, interactive demonstrations, pilot projects, collaborativve workshops, employee feedback sessions, implement incentives and recognition.</button>
+      <button onclick="changeText()" class=" border px-4 py-2 rounded-lg text-sm font-space-mono uppercase mt-5 ml-4 hover:text-white" id="optionFiveButton">We incorporate training sessions, interactive demonstrations, pilot projects, collaborativve workshops, employee feedback sessions, implement incentives and recognition.</button>
 
       <script>
         function changeText() {
@@ -220,11 +210,9 @@
   </body>
 </html>
 
-<script
-  async
-  src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
-></script>
+<!-- Import frameworks -->
 
+<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
 <script type="importmap">
   {
     "imports": {
@@ -233,6 +221,10 @@
     }
   }
 </script>
+
+<!-- Add audio click -->
+
+<audio id="clickSound" src="click_x.wav"></audio>
 
 <script type="module">
   import * as THREE from 'three'
@@ -259,6 +251,7 @@
   const greenMat = new THREE.MeshPhongMaterial({color: 0x00ff00})
   
   // Adjust materials
+
   bgMat.flatShading = true
   bgMat.vertexColors = true
 
@@ -271,7 +264,6 @@
     colors.push(.1, .1, .1)
   }
   bgMesh.geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3))
-
 
   // Chart markers
 
@@ -308,6 +300,29 @@
   const line3Mesh = new THREE.Mesh(line3Geo, materialB);
   scene.add(line3Mesh);
 
+  // Add a white triangleh path
+
+  const path = new THREE.Path();
+  path.lineTo(0, .001);
+  path.lineTo(0, 0);
+  path.lineTo(0, .001);
+  const points = path.getPoints();
+
+  const graphGeo = new THREE.BufferGeometry().setFromPoints(points);
+  const graphMat = new THREE.LineBasicMaterial({color: "#4e4e4e"});
+  const graph = new THREE.Line(graphGeo, graphMat);
+  scene.add(graph);
+
+  const graphVerts = graph.geometry.attributes.position.array
+  graphVerts[1] = 2.3092  // top y
+  graphVerts[3] = 2  // right x
+  graphVerts[4] = -1.1548 // right y
+  graphVerts[6] = -2 // left x
+  graphVerts[7] = -1.1548 // left y
+  graphVerts[9] = 0  // top x
+  graphVerts[10] = 2.3092 // top y
+  console.log(graphVerts)
+
   const reds = bgMesh.geometry.attributes.position.array
   reds[0] = 0
   reds[1] = 2.3092
@@ -331,10 +346,12 @@
   line1Mesh.position.y = -2
   line2Mesh.position.y = -2
   line3Mesh.position.y = -2
-  // graph.position.y = -2
+  graph.position.y = -2
   cubeA.position.y = -2
   cubeB.position.y = -2
   cubeC.position.y = -2
+  cubeC.position.y = -2
+
   // Lights
 
   const light = new THREE.DirectionalLight(0xffffff, 1)
@@ -355,6 +372,16 @@
   const cube = new THREE.Mesh(geometry, material)
   scene.add(cube)
   cube.position.y = 5
+
+  // Position chart
+
+  // bgMesh.position.x = -2.025
+  // line1Mesh.position.x = -2
+  // line2Mesh.position.x = -2
+  // line3Mesh.position.x = -2
+  // cubeA.position.x = -2
+  // cubeB.position.x = -2
+  // cubeC.position.x = -2
 
   // Move chart markers
 
@@ -384,6 +411,7 @@
       line1Mesh.position.y += 2
       line2Mesh.position.y += 2
       line3Mesh.position.y += 2
+      graph.position.y += 2.025
       cubeA.position.y += 2
       cubeB.position.y += 2
       cubeC.position.y += 2
@@ -414,6 +442,7 @@
       line1Mesh.position.y += 2
       line2Mesh.position.y += 2
       line3Mesh.position.y += 2
+      graph.position.y += 2.025
       cubeA.position.y += 2
       cubeB.position.y += 2
       cubeC.position.y += 2
@@ -444,6 +473,7 @@
       line1Mesh.position.y += 2
       line2Mesh.position.y += 2
       line3Mesh.position.y += 2
+      graph.position.y += 2.025
       cubeA.position.y += 2
       cubeB.position.y += 2
       cubeC.position.y += 2
@@ -474,6 +504,7 @@
       line1Mesh.position.y += 2
       line2Mesh.position.y += 2
       line3Mesh.position.y += 2
+      graph.position.y += 2.025
       cubeA.position.y += 2
       cubeB.position.y += 2
       cubeC.position.y += 2
@@ -504,11 +535,14 @@
       line1Mesh.position.y += 2
       line2Mesh.position.y += 2
       line3Mesh.position.y += 2
+      graph.position.y += 2.025
       cubeA.position.y += 2
       cubeB.position.y += 2
       cubeC.position.y += 2
     }
   }
+
+  // Game loop
 
   const mouse = {x: undefined, y: undefined}
 
@@ -522,6 +556,8 @@
   }
   animate()
 
+  // Event listeners for the button click
+
   addEventListener('mousemove', (event) =>
   {
     mouse.x = (event.clientX/innerWidth) * 2 - 1
@@ -529,12 +565,28 @@
     // console.log(mouse)
   })
 
-  // Event listener for the button click
-  document.getElementById('optionOneButton').addEventListener('click', moveBoxA1);
-  document.getElementById('optionTwoButton').addEventListener('click', moveBoxA2);
-  document.getElementById('optionThreeButton').addEventListener('click', moveBoxA3);
-  document.getElementById('optionFourButton').addEventListener('click', moveBoxA4);
-  document.getElementById('optionFiveButton').addEventListener('click', moveBoxA5);
+  var audio = document.getElementById("clickSound");
+
+  document.getElementById("optionOneButton").addEventListener("click", function() {
+    audio.play();
+    moveBoxA1()
+  });
+  document.getElementById("optionTwoButton").addEventListener("click", function() {
+    audio.play();
+    moveBoxA2()
+  });
+  document.getElementById("optionThreeButton").addEventListener("click", function() {
+    audio.play();
+    moveBoxA3()
+  });
+  document.getElementById("optionFourButton").addEventListener("click", function() {
+    audio.play();
+    moveBoxA4()
+  });
+  document.getElementById("optionFiveButton").addEventListener("click", function() {
+    audio.play();
+    moveBoxA5()
+  });
 </script>
 
 <!-- <style>
